@@ -31,6 +31,7 @@ src/agentic_forecast_review/
   evidence.py      evidence rows with stable, addressable row IDs
   credentials.py   OpenRouter API key lookup
   sealing.py       verifier for the sealed held-out case seeds
+  schemas.py       contracts for cases, manifest, tool calls, trace and packets
 tests/             pytest suite and fixtures
 docs/
   ground-zero.md   the project plan (+ ground-zero.pdf, figures/)
