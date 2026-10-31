@@ -1,0 +1,25 @@
+artifacts/
+data/raw/
+.env
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+build/
+dist/
+*.egg-info/
+.DS_Store
+
+# Held-out case seeds are never plaintext repository content. The only tracked
+# files are the ciphertext and aggregate manifest made by docs/sealing.md.
+cases/heldout/*
+!cases/heldout/seeds.jsonl.age
+!cases/heldout/manifest.json

@@ -1,0 +1,36 @@
+[project]
+name = "agentic-forecast-review"
+version = "0.1.0"
+description = "Code owns the numbers; the model owns bounded choices. An evidence-linked agent loop and offline evaluation suite for time-series review."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.13.5",
+]
+
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.3.1",
+    "pytest>=9.1.1",
+    "ruff>=0.16.6",
+]
+
+[tool.uv.build-backend]
+module-name = "agentic_forecast_review"
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

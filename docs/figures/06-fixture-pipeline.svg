@@ -1,0 +1,55 @@
+<svg viewBox="0 0 720 250" width="720" height="250" xmlns="http://www.w3.org/2000/svg">
+<style>text{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif}</style>
+<rect x="0" y="0" width="720" height="250" fill="#ffffff"/>
+    <defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6475"/></marker></defs>
+    <rect x="10" y="20" width="120" height="70" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="70" y="40" text-anchor="middle" font-size="10.5" font-weight="700">Family seed</text>
+    <text x="70" y="56" text-anchor="middle" font-size="9" fill="#5b6475">30 store-cat series</text>
+    <text x="70" y="69" text-anchor="middle" font-size="9" fill="#5b6475">weekly seasonality,</text>
+    <text x="70" y="82" text-anchor="middle" font-size="9" fill="#5b6475">trend, noise</text>
+    <rect x="155" y="20" width="120" height="70" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="215" y="40" text-anchor="middle" font-size="10.5" font-weight="700">Observations</text>
+    <text x="215" y="56" text-anchor="middle" font-size="9" fill="#5b6475">daily actuals</text>
+    <text x="215" y="69" text-anchor="middle" font-size="9" fill="#5b6475">3 issue dates</text>
+    <text x="215" y="82" text-anchor="middle" font-size="9" fill="#5b6475">28-day horizon</text>
+    <rect x="300" y="20" width="130" height="70" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="365" y="40" text-anchor="middle" font-size="10.5" font-weight="700">Forecasts</text>
+    <text x="365" y="56" text-anchor="middle" font-size="9" fill="#5b6475">seasonal-naive (reference)</text>
+    <text x="365" y="69" text-anchor="middle" font-size="9" fill="#5b6475">+ one synthetic model</text>
+    <text x="365" y="82" text-anchor="middle" font-size="9" fill="#5b6475">(versioned)</text>
+    <rect x="455" y="20" width="120" height="70" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="515" y="40" text-anchor="middle" font-size="10.5" font-weight="700">Derived metrics</text>
+    <text x="515" y="56" text-anchor="middle" font-size="9" fill="#5b6475">MAE, signed bias</text>
+    <text x="515" y="69" text-anchor="middle" font-size="9" fill="#5b6475">= mean(fcst − actual)</text>
+    <text x="515" y="82" text-anchor="middle" font-size="9" fill="#5b6475">by series × window</text>
+    <rect x="600" y="20" width="110" height="70" rx="6" fill="#f3f4f7" stroke="#2f5d8a"/>
+    <text x="655" y="40" text-anchor="middle" font-size="10.5" font-weight="700">Snapshot</text>
+    <text x="655" y="56" text-anchor="middle" font-size="9" fill="#5b6475">content hash =</text>
+    <text x="655" y="69" text-anchor="middle" font-size="9" fill="#5b6475">fingerprint</text>
+    <text x="655" y="82" text-anchor="middle" font-size="9" fill="#5b6475">read-only</text>
+    <rect x="155" y="130" width="275" height="100" rx="8" fill="#f8e6e6" stroke="#a23b3b"/>
+    <text x="292" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#a23b3b">Planted conditions (labelled synthetic)</text>
+    <g font-size="9.4" fill="#1c2230">
+      <text x="168" y="170">• missing actual dates</text>
+      <text x="168" y="186">• duplicate records</text>
+      <text x="168" y="202">• model-version / horizon mismatch</text>
+      <text x="168" y="218">• bias shift in one category</text>
+      <text x="320" y="170">• tool failure / timeout</text>
+      <text x="320" y="186">• ambiguous request</text>
+      <text x="320" y="202">• unsupported-cause ask</text>
+      <text x="320" y="218">• normal (no defect)</text>
+    </g>
+    <rect x="455" y="150" width="255" height="60" rx="6" fill="#efe8f8" stroke="#6a3fa0"/>
+    <text x="582" y="170" text-anchor="middle" font-size="10.5" font-weight="700" fill="#6a3fa0">Manifest (hidden)</text>
+    <text x="582" y="186" text-anchor="middle" font-size="9" fill="#5b6475">ground truth for the grader only;</text>
+    <text x="582" y="199" text-anchor="middle" font-size="9" fill="#5b6475">never reachable by tools, model or script</text>
+    <g stroke="#5b6475" stroke-width="1.4" fill="none" marker-end="url(#a5)">
+      <line x1="130" y1="55" x2="153" y2="55"/>
+      <line x1="275" y1="55" x2="298" y2="55"/>
+      <line x1="430" y1="55" x2="453" y2="55"/>
+      <line x1="575" y1="55" x2="598" y2="55"/>
+      <line x1="230" y1="128" x2="215" y2="92"/>
+      <line x1="330" y1="128" x2="355" y2="92"/>
+      <line x1="430" y1="180" x2="453" y2="180"/>
+    </g>
+  </svg>

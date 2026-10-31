@@ -1,0 +1,56 @@
+<svg viewBox="0 0 720 420" width="720" height="420" xmlns="http://www.w3.org/2000/svg">
+<style>text{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif}</style>
+<rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+    <defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6475"/></marker></defs>
+    <rect x="240" y="8" width="240" height="38" rx="6" fill="#e5f3ea" stroke="#2f7a4f"/>
+    <text x="360" y="24" text-anchor="middle" font-size="10.5" font-weight="700">“Store-cat CA_2·FOODS looks worse.</text>
+    <text x="360" y="38" text-anchor="middle" font-size="10.5" font-weight="700">Should we investigate the model?”</text>
+    <rect x="240" y="62" width="240" height="34" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="360" y="83" text-anchor="middle" font-size="10">① resolve_context → dates, model v3, MAE def.</text>
+    <rect x="240" y="112" width="240" height="34" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="360" y="133" text-anchor="middle" font-size="10">② compare_runs(window W vs W−1)</text>
+    <polygon points="360,160 400,180 360,200 320,180" fill="#fbf0e2" stroke="#a8641a"/>
+    <text x="360" y="184" text-anchor="middle" font-size="9" font-weight="700">reads counts</text>
+    <text x="140" y="178" text-anchor="middle" font-size="11" font-weight="700" fill="#a23b3b">Case A · defect planted</text>
+    <rect x="20" y="214" width="240" height="40" rx="6" fill="#fbf0e2" stroke="#a8641a"/>
+    <text x="140" y="230" text-anchor="middle" font-size="9.5">observation: 24 actuals vs 28 expected</text>
+    <text x="140" y="244" text-anchor="middle" font-size="9.5" fill="#5b6475">decision: comparison may be incomplete</text>
+    <rect x="20" y="266" width="240" height="34" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="140" y="287" text-anchor="middle" font-size="10">③ check_quality(series, W) → 4 missing dates</text>
+    <rect x="20" y="312" width="240" height="34" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="140" y="333" text-anchor="middle" font-size="10">④ evidence_rows(missing dates)</text>
+    <rect x="20" y="358" width="240" height="52" rx="8" fill="#e5f3ea" stroke="#2f7a4f" stroke-width="1.4"/>
+    <text x="140" y="376" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2f7a4f">STOP — UNTRUSTWORTHY</text>
+    <text x="140" y="391" text-anchor="middle" font-size="9.2">“Comparison incomplete; cannot conclude</text>
+    <text x="140" y="403" text-anchor="middle" font-size="9.2">the model deteriorated.” 4 calls used.</text>
+    <text x="580" y="178" text-anchor="middle" font-size="11" font-weight="700" fill="#2f5d8a">Case B · complete data</text>
+    <rect x="460" y="214" width="240" height="40" rx="6" fill="#fbf0e2" stroke="#a8641a"/>
+    <text x="580" y="230" text-anchor="middle" font-size="9.5">observation: 28/28 records, MAE ↑, bias −</text>
+    <text x="580" y="244" text-anchor="middle" font-size="9.5" fill="#5b6475">decision: look for concentration</text>
+    <rect x="460" y="266" width="240" height="34" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="580" y="287" text-anchor="middle" font-size="10">③ inspect_series(recent bias slices)</text>
+    <rect x="460" y="312" width="240" height="34" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="580" y="333" text-anchor="middle" font-size="10">④ compare_runs(vs seasonal-naive) ⑤ rows</text>
+    <rect x="460" y="358" width="240" height="52" rx="8" fill="#e5f3ea" stroke="#2f7a4f" stroke-width="1.4"/>
+    <text x="580" y="376" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2f7a4f">ANSWER</text>
+    <text x="580" y="391" text-anchor="middle" font-size="9.2">“Repeated underprediction in FOODS; others</text>
+    <text x="580" y="403" text-anchor="middle" font-size="9.2">stable. Cause not established.” 5 calls.</text>
+    <g stroke="#5b6475" stroke-width="1.4" fill="none" marker-end="url(#a4)">
+      <line x1="360" y1="46" x2="360" y2="60"/>
+      <line x1="360" y1="96" x2="360" y2="110"/>
+      <line x1="360" y1="146" x2="360" y2="158"/>
+      <path d="M320 180 L140 180 L140 212"/>
+      <path d="M400 180 L580 180 L580 212"/>
+      <line x1="140" y1="254" x2="140" y2="264"/>
+      <line x1="140" y1="300" x2="140" y2="310"/>
+      <line x1="140" y1="346" x2="140" y2="356"/>
+      <line x1="580" y1="254" x2="580" y2="264"/>
+      <line x1="580" y1="300" x2="580" y2="310"/>
+      <line x1="580" y1="346" x2="580" y2="356"/>
+    </g>
+    <text x="360" y="296" text-anchor="middle" font-size="9.5" font-weight="700" fill="#6a3fa0">Divergence point</text>
+    <text x="360" y="310" text-anchor="middle" font-size="9" fill="#6a3fa0">comes right after an</text>
+    <text x="360" y="323" text-anchor="middle" font-size="9" fill="#6a3fa0">observation that differs</text>
+    <text x="360" y="336" text-anchor="middle" font-size="9" fill="#6a3fa0">and is cited in</text>
+    <text x="360" y="349" text-anchor="middle" font-size="9" fill="#6a3fa0">observation_refs</text>
+  </svg>

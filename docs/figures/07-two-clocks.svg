@@ -1,0 +1,19 @@
+<svg viewBox="0 0 720 120" width="720" height="120" xmlns="http://www.w3.org/2000/svg">
+<style>text{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif}</style>
+<rect x="0" y="0" width="720" height="120" fill="#ffffff"/>
+    <defs><marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6475"/></marker></defs>
+    <line x1="20" y1="64" x2="700" y2="64" stroke="#1c2230" stroke-width="1.6" marker-end="url(#a6)"/>
+    <text x="700" y="84" text-anchor="end" font-size="9" fill="#5b6475">time</text>
+    <rect x="20" y="52" width="220" height="24" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="130" y="68" text-anchor="middle" font-size="9.5">history visible to the forecast</text>
+    <line x1="240" y1="24" x2="240" y2="104" stroke="#2f5d8a" stroke-width="2"/>
+    <text x="240" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#2f5d8a">issue date</text>
+    <rect x="240" y="52" width="260" height="24" fill="#fbf0e2" stroke="#a8641a"/>
+    <text x="370" y="68" text-anchor="middle" font-size="9.5">28-day horizon → actuals arrive</text>
+    <line x1="560" y1="24" x2="560" y2="104" stroke="#6a3fa0" stroke-width="2"/>
+    <text x="560" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#6a3fa0">review date (cutoff)</text>
+    <rect x="560" y="52" width="130" height="24" fill="#f8e6e6" stroke="#a23b3b" stroke-dasharray="4 3"/>
+    <text x="625" y="68" text-anchor="middle" font-size="9.5" fill="#a23b3b">invisible to agent</text>
+    <text x="130" y="98" text-anchor="middle" font-size="9" fill="#5b6475">Clock 1: the forecast uses only this</text>
+    <text x="400" y="98" text-anchor="middle" font-size="9" fill="#5b6475">Clock 2: the review may read actuals up to the cutoff</text>
+  </svg>

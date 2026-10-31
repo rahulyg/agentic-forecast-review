@@ -1,0 +1,53 @@
+<svg viewBox="0 0 720 300" width="720" height="300" xmlns="http://www.w3.org/2000/svg">
+<style>text{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif}</style>
+<rect x="0" y="0" width="720" height="300" fill="#ffffff"/>
+    <defs><marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6475"/></marker></defs>
+    <rect x="10" y="10" width="160" height="60" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="90" y="30" text-anchor="middle" font-size="10.5" font-weight="700">Development families</text>
+    <text x="90" y="46" text-anchor="middle" font-size="9" fill="#5b6475">15 dev cases (wkd 5)</text>
+    <text x="90" y="59" text-anchor="middle" font-size="9" fill="#5b6475">tune prompt + budget here</text>
+    <rect x="200" y="10" width="140" height="60" rx="6" fill="#efe8f8" stroke="#6a3fa0" stroke-width="1.6"/>
+    <text x="270" y="30" text-anchor="middle" font-size="10.5" font-weight="700" fill="#6a3fa0">FREEZE</text>
+    <text x="270" y="46" text-anchor="middle" font-size="9" fill="#5b6475">baseline tag (wkd 4)</text>
+    <text x="270" y="59" text-anchor="middle" font-size="9" fill="#5b6475">agent prompt tag (wkd 5)</text>
+    <rect x="370" y="10" width="160" height="60" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="450" y="30" text-anchor="middle" font-size="10.5" font-weight="700">Held-out families</text>
+    <text x="450" y="46" text-anchor="middle" font-size="9" fill="#5b6475">sealed seeds, unsealed</text>
+    <text x="450" y="59" text-anchor="middle" font-size="9" fill="#5b6475">only after freeze (wkd 6)</text>
+    <rect x="560" y="10" width="150" height="60" rx="6" fill="#f3f4f7" stroke="#2f5d8a"/>
+    <text x="635" y="30" text-anchor="middle" font-size="10.5" font-weight="700">Fingerprint</text>
+    <text x="635" y="46" text-anchor="middle" font-size="9" fill="#5b6475">hash every case; record</text>
+    <text x="635" y="59" text-anchor="middle" font-size="9" fill="#5b6475">family counts</text>
+    <rect x="120" y="110" width="200" height="50" rx="6" fill="#fbf0e2" stroke="#a8641a"/>
+    <text x="220" y="131" text-anchor="middle" font-size="10.5" font-weight="700">Agent × 2 repeats</text>
+    <text x="220" y="147" text-anchor="middle" font-size="9" fill="#5b6475">both reported; never pick the better</text>
+    <rect x="400" y="110" width="200" height="50" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="500" y="131" text-anchor="middle" font-size="10.5" font-weight="700">Baseline × 1</text>
+    <text x="500" y="147" text-anchor="middle" font-size="9" fill="#5b6475">deterministic: one run is enough</text>
+    <rect x="60" y="200" width="250" height="56" rx="6" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="185" y="220" text-anchor="middle" font-size="10.5" font-weight="700">Code grading (all packets)</text>
+    <text x="185" y="236" text-anchor="middle" font-size="9" fill="#5b6475">numbers vs snapshot · end state vs manifest</text>
+    <text x="185" y="249" text-anchor="middle" font-size="9" fill="#5b6475">policy violations · cost · calls</text>
+    <rect x="330" y="200" width="250" height="56" rx="6" fill="#e5f3ea" stroke="#2f7a4f"/>
+    <text x="455" y="220" text-anchor="middle" font-size="10.5" font-weight="700">Human rubric (blind to which side)</text>
+    <text x="455" y="236" text-anchor="middle" font-size="9" fill="#5b6475">completeness · explanation quality</text>
+    <text x="455" y="249" text-anchor="middle" font-size="9" fill="#5b6475">~90 held-out packets, timed</text>
+    <rect x="600" y="200" width="110" height="56" rx="6" fill="#f3f4f7" stroke="#1c2230"/>
+    <text x="655" y="220" text-anchor="middle" font-size="10.5" font-weight="700">Paired diffs</text>
+    <text x="655" y="236" text-anchor="middle" font-size="9" fill="#5b6475">by case family,</text>
+    <text x="655" y="249" text-anchor="middle" font-size="9" fill="#5b6475">as k / n counts</text>
+    <g stroke="#5b6475" stroke-width="1.4" fill="none" marker-end="url(#a7)">
+      <line x1="170" y1="40" x2="198" y2="40"/>
+      <line x1="340" y1="40" x2="368" y2="40"/>
+      <line x1="530" y1="40" x2="558" y2="40"/>
+      <path d="M635 70 L635 90 L220 90 L220 108"/>
+      <path d="M500 90 L500 108"/>
+      <line x1="220" y1="160" x2="185" y2="198"/>
+      <line x1="240" y1="160" x2="430" y2="198"/>
+      <line x1="500" y1="160" x2="215" y2="198"/>
+      <line x1="520" y1="160" x2="470" y2="198"/>
+      <path d="M185 256 L185 272 L655 272 L655 258"/>
+      <line x1="580" y1="228" x2="598" y2="228"/>
+    </g>
+    <text x="20" y="292" font-size="8.6" fill="#5b6475">Development results are reported separately and never pooled with held-out results.</text>
+  </svg>

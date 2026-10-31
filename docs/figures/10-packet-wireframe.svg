@@ -1,0 +1,49 @@
+<svg viewBox="0 0 720 380" width="720" height="380" xmlns="http://www.w3.org/2000/svg">
+<style>text{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif}</style>
+<rect x="0" y="0" width="720" height="380" fill="#ffffff"/>
+    <rect x="10" y="10" width="700" height="360" rx="10" fill="#ffffff" stroke="#1c2230" stroke-width="1.4"/>
+    <rect x="10" y="10" width="700" height="34" rx="10" fill="#f3f4f7"/>
+    <rect x="10" y="34" width="700" height="10" fill="#f3f4f7"/>
+    <text x="24" y="32" font-size="11" font-weight="700">Review packet · case h-017 · snapshot 9f3c…a1 · REPLAY of run 2026-12-13T10:42Z</text>
+    <rect x="24" y="56" width="330" height="44" rx="5" fill="#e5f3ea" stroke="#2f7a4f"/>
+    <text x="34" y="73" font-size="9.5" font-weight="700">Request &amp; scope</text>
+    <text x="34" y="89" font-size="9" fill="#5b6475">“Which store-category forecasts need review…” · W48</text>
+    <rect x="366" y="56" width="330" height="44" rx="5" fill="#e5f3ea" stroke="#2f7a4f"/>
+    <text x="376" y="73" font-size="9.5" font-weight="700">Outcome: STOP — comparison untrustworthy</text>
+    <text x="376" y="89" font-size="9" fill="#5b6475">4 / 8 tool calls · 5 / 8 turns · $0.04 · 11.2 s</text>
+    <rect x="24" y="112" width="330" height="140" rx="5" fill="#e8f0f8" stroke="#2f5d8a"/>
+    <text x="34" y="129" font-size="9.5" font-weight="700">Tool trace</text>
+    <g font-size="8.8" fill="#1c2230">
+      <text x="34" y="148">① resolve_context(scope=W48)        → ok</text>
+      <text x="34" y="166">② compare_runs(CA_2·FOODS, W48|W47)  → n 24/28</text>
+      <text x="44" y="179" fill="#a8641a">“counts differ; check quality first” · refs [②]</text>
+      <text x="34" y="197">③ check_quality(CA_2·FOODS, W48)    → 4 gaps</text>
+      <text x="34" y="215">④ evidence_rows(gap dates)          → 4 rows</text>
+      <text x="44" y="228" fill="#a8641a">“stop: comparison incomplete” · refs [③]</text>
+      <text x="34" y="244" fill="#5b6475">args · result hash · latency per call</text>
+    </g>
+    <rect x="366" y="112" width="330" height="140" rx="5" fill="#ffffff" stroke="#2f5d8a"/>
+    <text x="376" y="129" font-size="9.5" font-weight="700">Chart / table (from tool 3 data)</text>
+    <line x1="386" y1="232" x2="684" y2="232" stroke="#9aa1ae"/>
+    <polyline points="386,200 410,190 434,205 458,180 482,195 506,170 530,188 554,176 578,192 602,168 626,185 650,172 674,190" fill="none" stroke="#2f5d8a" stroke-width="1.6"/>
+    <polyline points="386,196 410,195 434,198 458,186 482,190 506,178 530,184 554,180 578,186 602,175 626,180 650,177 674,184" fill="none" stroke="#a8641a" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <rect x="530" y="140" width="72" height="92" fill="#f8e6e6" opacity=".7"/>
+    <text x="566" y="152" text-anchor="middle" font-size="8.4" fill="#a23b3b">4 missing</text>
+    <text x="376" y="246" font-size="8.4" fill="#5b6475">— actual   - - forecast   ▒ gap dates</text>
+    <rect x="24" y="264" width="330" height="94" rx="5" fill="#ffffff" stroke="#1c2230"/>
+    <text x="34" y="281" font-size="9.5" font-weight="700">Supported findings</text>
+    <g font-size="8.8">
+      <text x="34" y="299">• <tspan fill="#2f5d8a">4</tspan> actual dates missing in W48 [rows r1201–r1204]</text>
+      <text x="34" y="316">• W48 count <tspan fill="#2f5d8a">24</tspan> vs W47 count <tspan fill="#2f5d8a">28</tspan> [call ②]</text>
+      <text x="34" y="333">• The MAE change is not comparable as computed</text>
+      <text x="34" y="350" fill="#5b6475">blue numbers filled in by code from tokens</text>
+    </g>
+    <rect x="366" y="264" width="330" height="94" rx="5" fill="#fbf0e2" stroke="#a8641a"/>
+    <text x="376" y="281" font-size="9.5" font-weight="700">Not established</text>
+    <g font-size="8.8">
+      <text x="376" y="299">• whether the model deteriorated</text>
+      <text x="376" y="316">• why the actuals are missing</text>
+      <text x="376" y="333">• any business impact or cause</text>
+      <text x="376" y="350" fill="#5b6475">Suggested next check for a human: reload W48</text>
+    </g>
+  </svg>
