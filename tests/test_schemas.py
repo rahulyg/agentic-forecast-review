@@ -175,6 +175,28 @@ def test_failed_tool_result_needs_error() -> None:
     ToolResult(call_id="a1", ok=False, error="timeout", result_hash=HASH)
 
 
+def test_table_rows_must_share_columns() -> None:
+    with pytest.raises(ValidationError, match="same columns"):
+        ToolResult(
+            call_id="a1",
+            ok=True,
+            table=({"day": 1, "actual": 5}, {"day": 2}),
+            result_hash=HASH,
+        )
+
+
+def test_pointer_tokens_cannot_reach_table() -> None:
+    steps = list(_case_a_packet().trace)
+    result = steps[2].result
+    assert result is not None
+    steps[2] = steps[2].model_copy(
+        update={"result": result.model_copy(update={"table": ({"actual": 58},)})}
+    )
+    bad = Claim(label=ClaimLabel.INFERENCE, template="{ev:dq3.actual} units.")
+    with pytest.raises(ValidationError, match="does not resolve"):
+        _case_a_packet(trace=tuple(steps), claims=(bad,))
+
+
 def test_window_must_precede_period() -> None:
     with pytest.raises(ValidationError, match="window"):
         CanonicalScope(metric=Metric.MAE, period=WINDOW, window=PERIOD)
