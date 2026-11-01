@@ -26,3 +26,6 @@ _proc/
 cases/heldout/*
 !cases/heldout/seeds.jsonl.age
 !cases/heldout/manifest.json
+
+# Local spreadsheet export of the data, for browsing only
+agentic-forecast-review_data/

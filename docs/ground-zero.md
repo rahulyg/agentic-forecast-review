@@ -298,7 +298,7 @@ or complete conclusion, which is why the human rubric exists.
 *Figure 10 · Packet layout (wireframe). Illustrative values only; no run exists yet.
 Replays are always labelled as replays.*
 
-**What the repository will let anyone do**
+**What a reviewer can verify**
 
 - Regenerate the fixtures and forecasts, run the scripted report, replay every saved agent
   case and inspect the evaluation — all with no paid model calls.
@@ -329,7 +329,7 @@ starts until the gate result is written in the decision log.*
 | W4 (28–29 Nov) | Scripted baseline on the same tools; git tag `baseline-frozen`; held-out seeds generated and sealed | 6–8 | Tag exists before seeds are unsealed |
 | W5 (5–6 Dec) | 15 development cases across all conditions; rubric; timed grading pilot; tag the agent prompt | 8–10 | Held-out *n* set by the grading rule |
 | W6 (12–13 Dec) | Unseal held-out families; fingerprint; run agent twice and baseline once; grade | 10–12 | All packets graded |
-| W7 (19–20 Dec) | Replay demo; write-up including one real failure; final README | 8–10 | A stranger can rerun it offline |
+| W7 (19–20 Dec) | Replay demo; write-up including one real failure; final README | 8–10 | A reviewer can replay it offline |
 | **Total** | Plus 8–10 h contingency; ceiling about 82 h | **58–72** | |
 
 **[SPECULATION]** Hour estimates assume the familiar Python and ADK stack and are not

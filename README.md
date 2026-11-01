@@ -2,11 +2,13 @@
 
 Code owns the numbers; the model owns bounded choices. An evidence-linked agent loop and offline evaluation suite for time-series review.
 
-Analytics agents are hard to trust when free-text generation and arithmetic are mixed. This repository separates them: deterministic code computes every metric, and a bounded agent loop decides what to inspect next. Working over versioned, fingerprinted data snapshots with planted defects, the agent investigates apparent forecast deterioration, checks data quality before blaming the model, and is designed to compile a review packet in which no number appears in free text. The evaluation compares the agent's adaptive branching against a frozen scripted baseline.
-
-**Status: design stage.** The foundation code below exists and is tested; the tools, agent loop, baseline and evaluation are not built yet, and no results exist. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
+**Status: in progress, weekend 2 of 7.** Built and tested so far: the contracts, the metrics, the evidence rows and the synthetic data generator. The tools, agent loop, baseline and evaluation are not built yet, and no results exist. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
 
 ![System at a glance](docs/figures/02-system-at-a-glance.svg)
+
+## The problem
+
+Analytics agents are hard to trust when free-text generation and arithmetic are mixed: a fluent answer can carry a wrong number, and nothing shows where it came from. This project separates the two. Deterministic code computes every metric, and a bounded agent loop only decides what to inspect next. Working over versioned, fingerprinted data snapshots with planted defects, the agent investigates apparent forecast deterioration, checks data quality before blaming the model, and compiles a review packet in which no number appears in free text. The evaluation compares the agent's adaptive branching against a frozen scripted baseline.
 
 ## How it works
 
@@ -22,9 +24,15 @@ A fair result may favour the script. That is a valid outcome and will be publish
 
 No evaluation has been run. Results arrive in weekend 6 of the [schedule](docs/ground-zero.md#10-schedule-gates-and-limits).
 
-## What's in this folder
+## Design decisions
 
-**The project.** All code is written in notebooks; you only ever edit `nbs/`.
+- **One agent, five read-only tools, a hard budget.** Scope and limits are fixed up front so later work can be checked against them ([0001](docs/decisions/0001-project-scope.md)).
+- **Numbers only through pointer tokens.** The model cites a tool's named field; it never types a number. A validator rejects any stray digit.
+- **Planted defects, hidden answer key.** Each test snapshot carries one known condition (missing days, a biased model, a version mismatch, …); only the grader sees which.
+- **A frozen baseline, sealed held-out cases.** The scripted report is tagged before the held-out seeds are decrypted, so it cannot be tuned to them ([sealing](docs/sealing.md)).
+- **Notebooks are the source.** Every module is written as a notebook with explanation and worked examples; the Python package is generated from them ([0002](docs/decisions/0002-notebooks-are-the-source.md)).
+
+## What's here
 
 ```
 nbs/                            the source: explanation + code + worked examples
@@ -34,53 +42,17 @@ nbs/                            the source: explanation + code + worked examples
   03_schemas.ipynb                contracts for cases, manifest, tool calls, trace, packets
   04_sealing.ipynb                verifier for the sealed held-out case seeds
   05_credentials.ipynb            OpenRouter API key lookup
-  06_generator.ipynb              builds the synthetic sales snapshot (actuals, forecasts, row IDs)
-  90_explore_fixture_data.ipynb   a guided look at the data; nothing exported
-  data/                           small sample data the examples use
-src/agentic_forecast_review/    generated from nbs/ by `make export`; never edit by hand
-cases/dev/fam_01/               the generated snapshot (written by 06_generator; don't edit)
-tests/                          edge cases and rejection rules (pytest)
-docs/
-  ground-zero.md                  the project plan (+ ground-zero.pdf, figures/)
-  decisions/                      decision records
-  sealing.md                      how held-out seeds are sealed with age
-  parking-lot.md                  ideas deferred for later
+  06_generator.ipynb              the synthetic sales snapshot: actuals, forecasts, row IDs
+  90_explore_fixture_data.ipynb   a guided, charted look at the data
+src/agentic_forecast_review/    generated from nbs/
+cases/dev/                      generated snapshots
+tests/                          edge cases and rejection rules
+docs/                           the plan, decision records, figures, sealing, parking lot
 ```
 
-Notebooks show each function working on a normal example; `tests/` checks that bad
-input is rejected. Each check lives in one place only.
+## Verifying
 
-**Settings files tools look for by name.** You don't edit these by hand.
-
-| File | What it is |
-|---|---|
-| `pyproject.toml` | Project name, Python version, libraries, tool settings |
-| `uv.lock` | Exact library versions, so installs are identical everywhere |
-| `Makefile` | Shortcuts: `make export`, `make test`, `make all` |
-| `.github/workflows/ci.yml` | GitHub runs `make all` on every push |
-| `.pre-commit-config.yaml` | Before each commit: regenerate `src/`, strip notebook outputs, lint |
-| `.gitignore` | What git never uploads (`.env`, `.venv`, caches) |
-
-`README.md` is this page; `LICENSE` is MIT.
-
-## Running it
-
-Prerequisites: [uv](https://docs.astral.sh/uv/). uv fetches a suitable Python if needed.
-
-```
-make install     # install everything (uv sync --locked)
-uv run pre-commit install   # once per clone: strip outputs and regenerate src/ on commit
-```
-
-Open a notebook in `nbs/` in VS Code and pick the `.venv` kernel. After changing a
-notebook:
-
-```
-make export      # regenerate src/ from the notebooks
-make all         # export, strip outputs, lint, pytest, run the notebook examples
-```
-
-Live model calls will need `OPENROUTER_API_KEY` in your shell or in an ignored repo-root `.env`. Nothing in the current code calls a model.
+Everything runs offline with no paid model calls. CI regenerates the code from the notebooks, runs every notebook example and every test, and fails if the committed snapshot differs from a fresh run. Setup and commands are in [docs/development.md](docs/development.md).
 
 ## License
 
