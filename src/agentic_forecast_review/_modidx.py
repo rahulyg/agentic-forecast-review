@@ -194,6 +194,10 @@ d = {
                 "schemas.html#toolresult._error_iff_failed",
                 "agentic_forecast_review/schemas.py",
             ),
+            "agentic_forecast_review.schemas.ToolResult._table_rows_match": (
+                "schemas.html#toolresult._table_rows_match",
+                "agentic_forecast_review/schemas.py",
+            ),
             "agentic_forecast_review.schemas.TraceStep": (
                 "schemas.html#tracestep",
                 "agentic_forecast_review/schemas.py",

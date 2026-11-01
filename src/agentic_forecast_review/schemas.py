@@ -7,6 +7,7 @@ __all__ = [
     "MAX_OBSERVATION_REFS",
     "CallId",
     "Identifier",
+    "FieldName",
     "FieldValue",
     "POINTER_TOKEN",
     "ToolArgs",
@@ -49,6 +50,7 @@ MAX_OBSERVATION_REFS = 2
 
 CallId = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]*$")]
 Identifier = Annotated[str, StringConstraints(min_length=1, pattern=r"^\S+$")]
+FieldName = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]*$")]
 FieldValue = int | float | str | bool
 
 POINTER_TOKEN = re.compile(r"\{ev:([a-z][a-z0-9_]*)\.([a-z][a-z0-9_]*)\}")
@@ -244,14 +246,14 @@ class ToolCall(_Frozen):
 
 
 class ToolResult(_Frozen):
-    """A bounded observation. ``fields`` are what pointer tokens may reference."""
+    """A bounded observation. ``fields`` are what pointer tokens may reference;
+    ``table`` holds rows to show, which pointer tokens cannot reach."""
 
     call_id: CallId
     ok: bool
-    fields: dict[
-        Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]*$")], FieldValue
-    ] = {}
+    fields: dict[FieldName, FieldValue] = {}
     row_ids: tuple[Identifier, ...] = ()
+    table: tuple[dict[FieldName, FieldValue], ...] = ()
     error: str | None = None
     result_hash: Annotated[str, StringConstraints(pattern=r"^[a-f0-9]{64}$")]
 
@@ -259,6 +261,12 @@ class ToolResult(_Frozen):
     def _error_iff_failed(self) -> Self:
         if self.ok == (self.error is not None):
             raise ValueError("error must be set exactly when ok is false")
+        return self
+
+    @model_validator(mode="after")
+    def _table_rows_match(self) -> Self:
+        if any(row.keys() != self.table[0].keys() for row in self.table):
+            raise ValueError("every table row must have the same columns")
         return self
 
 
