@@ -22,32 +22,59 @@ A fair result may favour the script. That is a valid outcome and will be publish
 
 No evaluation has been run. Results arrive in weekend 6 of the [schedule](docs/ground-zero.md#10-schedule-gates-and-limits).
 
-## Repository layout
+## What's in this folder
+
+**The project.** All code is written in notebooks; you only ever edit `nbs/`.
 
 ```
-src/agentic_forecast_review/
-  fixtures.py      strict fixture loading, split at origin, seasonal-naive
-  metrics.py       MAE and signed bias (forecast minus actual)
-  evidence.py      evidence rows with stable, addressable row IDs
-  credentials.py   OpenRouter API key lookup
-  sealing.py       verifier for the sealed held-out case seeds
-  schemas.py       contracts for cases, manifest, tool calls, trace and packets
-tests/             pytest suite and fixtures
+nbs/                            the source: explanation + code + worked examples
+  00_fixtures.ipynb               load a series, split at origin, seasonal-naive
+  01_metrics.ipynb                MAE and signed bias
+  02_evidence.ipynb               evidence rows with stable, addressable row IDs
+  03_schemas.ipynb                contracts for cases, manifest, tool calls, trace, packets
+  04_sealing.ipynb                verifier for the sealed held-out case seeds
+  05_credentials.ipynb            OpenRouter API key lookup
+  data/                           small sample data the examples use
+src/agentic_forecast_review/    generated from nbs/ by `make export`; never edit by hand
+tests/                          edge cases and rejection rules (pytest)
 docs/
-  ground-zero.md   the project plan (+ ground-zero.pdf, figures/)
-  sealing.md       how held-out seeds are sealed with age
-  decisions/       decision records
+  ground-zero.md                  the project plan (+ ground-zero.pdf, figures/)
+  decisions/                      decision records
+  sealing.md                      how held-out seeds are sealed with age
+  parking-lot.md                  ideas deferred for later
 ```
+
+Notebooks show each function working on a normal example; `tests/` checks that bad
+input is rejected. Each check lives in one place only.
+
+**Settings files tools look for by name.** You don't edit these by hand.
+
+| File | What it is |
+|---|---|
+| `pyproject.toml` | Project name, Python version, libraries, tool settings |
+| `uv.lock` | Exact library versions, so installs are identical everywhere |
+| `Makefile` | Shortcuts: `make export`, `make test`, `make all` |
+| `.github/workflows/ci.yml` | GitHub runs `make all` on every push |
+| `.pre-commit-config.yaml` | Before each commit: regenerate `src/`, strip notebook outputs, lint |
+| `.gitignore` | What git never uploads (`.env`, `.venv`, caches) |
+
+`README.md` is this page; `LICENSE` is MIT.
 
 ## Running it
 
 Prerequisites: [uv](https://docs.astral.sh/uv/). uv fetches a suitable Python if needed.
 
 ```
-make install   # uv sync --locked
-make lint      # ruff check, ruff format --check, mypy --strict on src/
-make test      # pytest
-make all       # lint, then test
+make install     # install everything (uv sync --locked)
+uv run pre-commit install   # once per clone: strip outputs and regenerate src/ on commit
+```
+
+Open a notebook in `nbs/` in VS Code and pick the `.venv` kernel. After changing a
+notebook:
+
+```
+make export      # regenerate src/ from the notebooks
+make all         # export, strip outputs, lint, pytest, run the notebook examples
 ```
 
 Live model calls will need `OPENROUTER_API_KEY` in your shell or in an ignored repo-root `.env`. Nothing in the current code calls a model.

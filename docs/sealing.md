@@ -50,7 +50,7 @@ still inspect the staged diff before committing.
 4. Commit only those two files and run the verifier:
 
    ```
-   uv run python -m agentic_forecast_review.sealing
+   uv run verify-seal
    ```
 
 ## What the verifier proves

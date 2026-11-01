@@ -39,10 +39,6 @@ def _edit(manifest_path: Path, **changes: object) -> None:
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
 
-def test_verifier_accepts_valid_seal_without_decrypting(tmp_path: Path) -> None:
-    verify_manifest(_write_seal(tmp_path), tmp_path)
-
-
 def test_verifier_rejects_ciphertext_hash_mismatch(tmp_path: Path) -> None:
     manifest = _write_seal(tmp_path)
     artifact = tmp_path / EXPECTED_ARTIFACT
