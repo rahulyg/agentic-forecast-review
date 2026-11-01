@@ -69,11 +69,11 @@ def split_at_origin(
 def seasonal_naive(
     history: Sequence[Observation], *, period: int, horizon: int
 ) -> float:
-    """Repeat the value from one season before the forecast day."""
+    """Repeat the matching day of the last full season, ``horizon`` days ahead."""
     if period <= 0:
         raise ValueError("period must be positive")
-    if horizon != 1:
-        raise ValueError("only horizon=1 is supported so far")
+    if horizon < 1:
+        raise ValueError("horizon must be at least 1")
     if len(history) < period:
         raise ValueError("history must contain one full period")
-    return history[-period].value
+    return history[-period + (horizon - 1) % period].value

@@ -35,12 +35,12 @@ def test_seasonal_naive_rejects_bad_period(period: int) -> None:
         seasonal_naive((), period=period, horizon=1)
 
 
-def test_seasonal_naive_requires_full_history_and_one_step_horizon() -> None:
+def test_seasonal_naive_requires_full_history_and_positive_horizon() -> None:
     history = (Observation("x", 1, 1.0),)
     with pytest.raises(ValueError, match="history"):
         seasonal_naive(history, period=7, horizon=1)
     with pytest.raises(ValueError, match="horizon"):
-        seasonal_naive(history * 7, period=7, horizon=2)
+        seasonal_naive(history * 7, period=7, horizon=0)
 
 
 @pytest.mark.parametrize(

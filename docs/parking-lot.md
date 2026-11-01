@@ -5,3 +5,4 @@ Add a line; don't act on it.
 
 - A call-budgeted version of the scripted baseline (fixed top-K checks), as a second comparison.
 - Simulated clarification replies, so a run can continue after CLARIFY instead of ending.
+- After W7: containerize and host on GCP Cloud Run, for the experience: a public replay demo plus a login-only live agent, with the key in Secret Manager and a budget cap.

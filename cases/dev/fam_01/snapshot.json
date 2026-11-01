@@ -1,0 +1,50 @@
+{
+  "snapshot_id": "snap_554da1510de7",
+  "seed": 7,
+  "first_day": 1,
+  "last_day": 196,
+  "issue_days": [
+    112,
+    140,
+    168
+  ],
+  "horizon": 28,
+  "model_versions": [
+    "seasonal_naive_v1",
+    "synthetic_v3"
+  ],
+  "series": [
+    "CA_1_FOODS",
+    "CA_1_HOBBIES",
+    "CA_1_HOUSEHOLD",
+    "CA_2_FOODS",
+    "CA_2_HOBBIES",
+    "CA_2_HOUSEHOLD",
+    "CA_3_FOODS",
+    "CA_3_HOBBIES",
+    "CA_3_HOUSEHOLD",
+    "CA_4_FOODS",
+    "CA_4_HOBBIES",
+    "CA_4_HOUSEHOLD",
+    "TX_1_FOODS",
+    "TX_1_HOBBIES",
+    "TX_1_HOUSEHOLD",
+    "TX_2_FOODS",
+    "TX_2_HOBBIES",
+    "TX_2_HOUSEHOLD",
+    "TX_3_FOODS",
+    "TX_3_HOBBIES",
+    "TX_3_HOUSEHOLD",
+    "WI_1_FOODS",
+    "WI_1_HOBBIES",
+    "WI_1_HOUSEHOLD",
+    "WI_2_FOODS",
+    "WI_2_HOBBIES",
+    "WI_2_HOUSEHOLD",
+    "WI_3_FOODS",
+    "WI_3_HOBBIES",
+    "WI_3_HOUSEHOLD"
+  ],
+  "n_actual_rows": 5880,
+  "n_forecast_rows": 5040
+}
