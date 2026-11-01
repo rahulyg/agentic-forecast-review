@@ -34,8 +34,11 @@ nbs/                            the source: explanation + code + worked examples
   03_schemas.ipynb                contracts for cases, manifest, tool calls, trace, packets
   04_sealing.ipynb                verifier for the sealed held-out case seeds
   05_credentials.ipynb            OpenRouter API key lookup
+  06_generator.ipynb              builds the synthetic sales snapshot (actuals, forecasts, row IDs)
+  90_explore_fixture_data.ipynb   a guided look at the data; nothing exported
   data/                           small sample data the examples use
 src/agentic_forecast_review/    generated from nbs/ by `make export`; never edit by hand
+cases/dev/fam_01/               the generated snapshot (written by 06_generator; don't edit)
 tests/                          edge cases and rejection rules (pytest)
 docs/
   ground-zero.md                  the project plan (+ ground-zero.pdf, figures/)

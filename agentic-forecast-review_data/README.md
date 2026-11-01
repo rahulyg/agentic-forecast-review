@@ -1,8 +1,8 @@
 # Exported fixture data (draft)
 
-A one-off export of the data built by `nbs/90_explore_fixture_data.ipynb` with
-`SEED = 7`, for browsing in a spreadsheet. It uses the draft W2 recipe; the real
-generator (W2 step 2) will write its own files under `cases/dev/`.
+A one-off export of the data with `SEED = 7`, for browsing in a spreadsheet. The
+generator (`nbs/06_generator.ipynb`) reproduces these numbers exactly and checks that
+it does; its own files, with row IDs, are in `cases/dev/fam_01/`.
 
 | File | Rows | Contents |
 |---|---|---|
