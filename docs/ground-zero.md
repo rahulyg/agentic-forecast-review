@@ -208,13 +208,17 @@ is forecast minus actual, so negative means underprediction.*
 
 ### Starting code in this repository
 
-- `fixtures.py`: strict fixture loader, split at origin, seasonal-naive (extend from one
+All code is written in notebooks under `nbs/`; the modules in `src/` are generated from
+them (see [decision 0002](decisions/0002-notebooks-are-the-source.md)).
+
+- `00_fixtures`: strict fixture loader, split at origin, seasonal-naive (extend from one
   series to many)
-- `metrics.py`: validated MAE and signed bias
-- `evidence.py`: evidence rows with stable row IDs
-- `credentials.py`: OpenRouter key handling
-- `sealing.py` and [sealing.md](sealing.md): `age` sealing of held-out case seeds
-- uv, ruff, mypy `--strict`, pytest, CI
+- `01_metrics`: validated MAE and signed bias
+- `02_evidence`: evidence rows with stable row IDs
+- `03_schemas`: contracts for cases, manifest, tool calls, trace and packets
+- `04_sealing` and [sealing.md](sealing.md): `age` sealing of held-out case seeds
+- `05_credentials`: OpenRouter key handling
+- uv, nbdev, ruff, mypy `--strict`, pytest, CI
 
 ### Optional: real retail data (after weekend 7)
 

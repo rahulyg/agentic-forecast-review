@@ -11,34 +11,8 @@ from agentic_forecast_review.fixtures import (
     Observation,
     load_observations,
     seasonal_naive,
-    split_at_origin,
 )
 from agentic_forecast_review.metrics import mae, signed_bias
-
-FIXTURE = Path(__file__).parent / "fixtures" / "synthetic_weekly_01.csv"
-
-
-def test_fixture_to_evidence_row_end_to_end() -> None:
-    observations = load_observations(FIXTURE)
-    history, target = split_at_origin(observations, origin_day=7)
-    forecast = seasonal_naive(history, period=7, horizon=1)
-    value = mae([target[0].value], [forecast])
-    row = metric_evidence(
-        series_id=target[0].series_id,
-        model_version="seasonal_naive_v0",
-        origin_day=7,
-        horizon=1,
-        metric="mae",
-        value=value,
-    )
-    assert value == 3.0
-    assert row.row_id == "synthetic_weekly_01__seasonal_naive_v0__origin_7__h1__mae"
-
-
-def test_loader_and_split_real_fixture() -> None:
-    observations = load_observations(FIXTURE)
-    train, target = split_at_origin(observations, origin_day=7)
-    assert len(train) == 7 and target[0].value == 13.0
 
 
 def test_loader_rejects_wrong_columns(tmp_path: Path) -> None:
@@ -88,15 +62,6 @@ def test_metrics_reject_invalid_inputs(
         signed_bias(actual, predicted)
 
 
-def test_mae_mean() -> None:
-    assert mae([1.0, 5.0], [3.0, 2.0]) == 2.5
-
-
-def test_signed_bias_is_forecast_minus_actual() -> None:
-    assert signed_bias([10.0, 10.0], [8.0, 9.0]) == -1.5
-    assert signed_bias([10.0], [12.0]) == 2.0
-
-
 def test_lookup_requires_exactly_one_row() -> None:
     row = metric_evidence(
         series_id="x",
@@ -113,7 +78,6 @@ def test_lookup_requires_exactly_one_row() -> None:
         "horizon": 1,
         "metric": "mae",
     }
-    assert find_evidence((row,), **kwargs) is row
     with pytest.raises(LookupError, match="0"):
         find_evidence((), **kwargs)
     with pytest.raises(LookupError, match="2"):

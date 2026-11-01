@@ -17,6 +17,9 @@ build/
 dist/
 *.egg-info/
 .DS_Store
+.ipynb_checkpoints/
+_docs/
+_proc/
 
 # Held-out case seeds are never plaintext repository content. The only tracked
 # files are the ciphertext and aggregate manifest made by docs/sealing.md.

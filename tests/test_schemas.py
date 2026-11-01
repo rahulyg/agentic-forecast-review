@@ -97,16 +97,6 @@ def _case_a_packet(**overrides: Any) -> Packet:
     return Packet.model_validate(values)
 
 
-def test_worked_example_packet_validates_and_renders() -> None:
-    packet = _case_a_packet()
-    assert packet.render()[0] == "4 actual dates are missing in the period."
-
-
-def test_packet_round_trips_through_json() -> None:
-    packet = _case_a_packet()
-    assert Packet.model_validate_json(packet.model_dump_json()) == packet
-
-
 def test_unresolvable_pointer_token_is_rejected() -> None:
     bad = Claim(label=ClaimLabel.INFERENCE, template="{ev:cmp2.mae_delta} worse.")
     with pytest.raises(ValidationError, match="does not resolve"):
@@ -172,18 +162,7 @@ def test_cost_must_match_trace() -> None:
         _case_a_packet(cost={"turns": 2, "calls": 3, "usd": 0, "seconds": 0})
 
 
-def test_tool_args_are_discriminated_by_tool_name() -> None:
-    call = ToolCall.model_validate(
-        {
-            "call_id": "dq1",
-            "args": {
-                "tool": "check_quality",
-                "series": ["CA_2_FOODS"],
-                "days": {"start_day": 1, "end_day": 7},
-            },
-        }
-    )
-    assert isinstance(call.args, CheckQualityArgs)
+def test_tool_args_must_match_tool_name() -> None:
     with pytest.raises(ValidationError):
         ToolCall.model_validate(
             {"call_id": "x1", "args": {"tool": "check_quality", "row_ids": ["r1"]}}
@@ -194,15 +173,6 @@ def test_failed_tool_result_needs_error() -> None:
     with pytest.raises(ValidationError, match="error"):
         ToolResult(call_id="a1", ok=False, result_hash=HASH)
     ToolResult(call_id="a1", ok=False, error="timeout", result_hash=HASH)
-
-
-def test_canonical_scope_reports_missing_fields() -> None:
-    scope = CanonicalScope(metric=None, period=PERIOD, window=None, series=None)
-    assert scope.missing() == {
-        MissingScope.METRIC,
-        MissingScope.WINDOW,
-        MissingScope.SERIES,
-    }
 
 
 def test_window_must_precede_period() -> None:
