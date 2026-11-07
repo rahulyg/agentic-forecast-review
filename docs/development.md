@@ -22,12 +22,16 @@ Notebooks show each function working on a normal example; `tests/` checks that b
 input is rejected. Each check lives in one place only.
 
 Running `nbs/06b_cases.ipynb` writes the test cases, the answer key
-(`cases/dev/manifest.jsonl`) and the snapshots they use. Snapshots are rebuilt on demand
+(`cases/dev/manifest.jsonl`, read only by the grader), the run settings
+(`cases/dev/run_settings.jsonl`, read only by the gateway) and the snapshots they use. Snapshots are rebuilt on demand
 and ignored by git; each case file pins its `snapshot_id`, and a test fails if the
 committed cases or answer key ever differ from a fresh build.
 
-Live model calls (from weekend 3) need `OPENROUTER_API_KEY` in the shell or in an
-ignored repo-root `.env`. Nothing in the current code calls a model.
+Live model calls need `OPENROUTER_API_KEY` in the shell or in an ignored repo-root
+`.env` (found from any folder below it). Only `nbs/10_agent` and `nbs/11_kill_gate` call
+the model, in cells marked `#| notest`, so CI never does. Saved runs under `runs/` are
+replayed offline by CI; a run recorded before a tool changed can no longer be replayed,
+by design.
 
 ## Settings files
 

@@ -36,15 +36,19 @@ def _rows(rows: tuple[ActualRow, ...]) -> Counter[tuple[object, ...]]:
     return Counter(astuple(row) for row in rows)
 
 
-def test_committed_cases_and_manifest_match_a_fresh_build(family: Family) -> None:
+def test_committed_case_files_match_a_fresh_build(family: Family) -> None:
     folder = DEV / FAMILY_ID / "cases"
     expected = {f"{case.case_id}.json": case for case in family.cases}
     assert sorted(path.name for path in folder.iterdir()) == sorted(expected)
     for name, case in expected.items():
         on_disk = (folder / name).read_text(encoding="utf-8")
         assert on_disk == case.model_dump_json(indent=2) + "\n", name
-    manifest = "".join(entry.model_dump_json() + "\n" for entry in family.manifest)
-    assert (DEV / "manifest.jsonl").read_text(encoding="utf-8") == manifest
+    for name, entries in (
+        ("manifest.jsonl", family.manifest),
+        ("run_settings.jsonl", family.run_settings),
+    ):
+        lines = "".join(entry.model_dump_json() + "\n" for entry in entries)
+        assert (DEV / name).read_text(encoding="utf-8") == lines, name
 
 
 def test_family_is_deterministic(family: Family) -> None:
@@ -97,7 +101,9 @@ def test_version_and_bias_changes_touch_only_their_forecasts(family: Family) -> 
         for old, new in pairs:
             assert old.issue_day == issue_day and old.model_version == "synthetic_v3"
             if condition is PlantedCondition.VERSION_MISMATCH:
-                assert new.model_version == "synthetic_v2" and new.value == old.value
+                assert (
+                    new.model_version == "synthetic_v2" and new.horizon == old.horizon
+                )
             else:
                 assert old.series_id.endswith("_FOODS") and new.value < old.value
 

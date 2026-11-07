@@ -22,6 +22,7 @@ __all__ = [
     "CanonicalScope",
     "Case",
     "ManifestEntry",
+    "RunSetting",
     "ResolveContextArgs",
     "CompareRunsArgs",
     "InspectSeriesArgs",
@@ -211,6 +212,13 @@ class ManifestEntry(_Frozen):
         return sorted(missing)
 
 
+class RunSetting(_Frozen):
+    """How the harness runs one case. Read by the gateway only, never by the model."""
+
+    case_id: Identifier
+    fail_first_call_to: ToolName | None = None
+
+
 # %% ../../nbs/03_schemas.ipynb #504fb2a444614c0babb325280ed9130a
 class ResolveContextArgs(_Frozen):
     tool: Literal[ToolName.RESOLVE_CONTEXT] = ToolName.RESOLVE_CONTEXT
@@ -383,8 +391,9 @@ class Packet(_Frozen):
                     raise ValueError(f"duplicate call_id {step.call.call_id!r}")
                 results[step.call.call_id] = step.result
 
-        for claim in self.claims:
-            for call_id, field in claim.tokens():
+        texts = [claim.template for claim in self.claims] + list(self.not_established)
+        for text in texts:
+            for call_id, field in POINTER_TOKEN.findall(text):
                 result = results.get(call_id)
                 if result is None or field not in result.fields:
                     raise ValueError(
@@ -394,16 +403,19 @@ class Packet(_Frozen):
 
     def render(self) -> list[str]:
         """Claims with every pointer token replaced by its validated value."""
+        return [self._fill(claim.template) for claim in self.claims]
+
+    def render_not_established(self) -> list[str]:
+        """``not_established`` with every pointer token replaced by its value."""
+        return [self._fill(text) for text in self.not_established]
+
+    def _fill(self, text: str) -> str:
         values = {
             (step.result.call_id, name): value
             for step in self.trace
             if step.result is not None
             for name, value in step.result.fields.items()
         }
-        return [
-            POINTER_TOKEN.sub(
-                lambda match: str(values[(match.group(1), match.group(2))]),
-                claim.template,
-            )
-            for claim in self.claims
-        ]
+        return POINTER_TOKEN.sub(
+            lambda match: str(values[(match.group(1), match.group(2))]), text
+        )

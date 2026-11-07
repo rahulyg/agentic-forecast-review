@@ -1,0 +1,329 @@
+{
+ "case_id": "fam_01__c2",
+ "snapshot_id": "snap_7d40a78799d8",
+ "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+ "temperature": 0.0,
+ "prompt_sha256": "34754b8c64230a9c8b217276bbd17596213e8c970bd379eca37290290f682886",
+ "started_at": "2026-11-07T20:13:36+00:00",
+ "tokens": {
+  "prompt": 20216,
+  "completion": 3757
+ },
+ "error": null,
+ "notes": [
+  "finish refused: 1 validation error for Claim\n  Value error, a FINDING must cite at least one source row [type=value_error, input_value={'label': <ClaimLabel.FIN...riod}.', 'row_refs': ()}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error",
+  "finish refused: stray digits {'claims[1]': ['d0176', 'd0182', 'd0189'], 'claims[2]': ['169-196']}"
+ ],
+ "requests": [
+  {
+   "request": {
+    "tool": "resolve_context"
+   },
+   "reason": "Establish the snapshot context before judging CA_2_FOODS MAE.",
+   "based_on": []
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "CA_2_FOODS"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    }
+   },
+   "reason": "Compare CA_2_FOODS MAE in the review period against the prior four weeks.",
+   "based_on": [
+    "ctx1"
+   ]
+  },
+  {
+   "request": {
+    "tool": "check_quality",
+    "series": [
+     "CA_2_FOODS"
+    ],
+    "days": {
+     "start_day": 141,
+     "end_day": 196
+    }
+   },
+   "reason": "Verify actuals completeness, duplicates, model version and horizons so the MAE comparison is fair.",
+   "based_on": [
+    "ctx1"
+   ]
+  }
+ ],
+ "packet": {
+  "case_id": "fam_01__c2",
+  "runner": "agent",
+  "snapshot_id": "snap_7d40a78799d8",
+  "terminal_state": "STOP_UNTRUSTWORTHY",
+  "claims": [
+   {
+    "label": "FINDING",
+    "template": "compare_runs reports CA_2_FOODS review-period MAE {ev:cmp2.ca_2_foods__mae_period} computed over {ev:cmp2.ca_2_foods__n_actual_period} actual rows against {ev:cmp2.ca_2_foods__n_expected_period} expected, while the window MAE {ev:cmp2.ca_2_foods__mae_window} is over {ev:cmp2.ca_2_foods__n_actual_window} of {ev:cmp2.ca_2_foods__n_expected_window} rows; both sides use model {ev:cmp2.ca_2_foods__model_period} at horizons {ev:cmp2.ca_2_foods__horizons_period}.",
+    "row_refs": [
+     "act__CA_2_FOODS__d0175",
+     "act__CA_2_FOODS__d0176",
+     "act__CA_2_FOODS__d0182",
+     "act__CA_2_FOODS__d0189"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "check_quality reports {ev:dq3.ca_2_foods__missing_days} missing days (the four rows cited), {ev:dq3.ca_2_foods__duplicate_rows} duplicate rows, coverage {ev:dq3.ca_2_foods__coverage}, a single model-version label, and horizon range {ev:dq3.ca_2_foods__horizon_range}.",
+    "row_refs": [
+     "act__CA_2_FOODS__d0175",
+     "act__CA_2_FOODS__d0176",
+     "act__CA_2_FOODS__d0182",
+     "act__CA_2_FOODS__d0189"
+    ]
+   },
+   {
+    "label": "INFERENCE",
+    "template": "The review-period MAE is computed on incomplete actuals (all four missing days fall inside the review period), so the period-versus-window comparison is not fair and the model cannot be judged from it.",
+    "row_refs": []
+   }
+  ],
+  "clarification": null,
+  "not_established": [
+   "Whether the CA_2_FOODS forecast model actually needs investigating: the review-period MAE is not comparable because its actuals are incomplete."
+  ],
+  "trace": [
+   {
+    "turn": 1,
+    "summary": "Establish the snapshot context before judging CA_2_FOODS MAE.",
+    "observation_refs": [],
+    "call": {
+     "call_id": "ctx1",
+     "args": {
+      "tool": "resolve_context"
+     }
+    },
+    "result": {
+     "call_id": "ctx1",
+     "ok": true,
+     "fields": {
+      "snapshot_id": "snap_7d40a78799d8",
+      "first_day": 1,
+      "last_day": 196,
+      "review_day": 196,
+      "n_series": 30,
+      "model_versions": "seasonal_naive_v1,synthetic_v3",
+      "benchmark_model": "seasonal_naive_v1",
+      "issue_days": "112,140,168",
+      "metrics": "mae,signed_bias"
+     },
+     "row_ids": [],
+     "table": [
+      {
+       "series_id": "CA_1_FOODS"
+      },
+      {
+       "series_id": "CA_1_HOBBIES"
+      },
+      {
+       "series_id": "CA_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_2_FOODS"
+      },
+      {
+       "series_id": "CA_2_HOBBIES"
+      },
+      {
+       "series_id": "CA_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_3_FOODS"
+      },
+      {
+       "series_id": "CA_3_HOBBIES"
+      },
+      {
+       "series_id": "CA_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_4_FOODS"
+      },
+      {
+       "series_id": "CA_4_HOBBIES"
+      },
+      {
+       "series_id": "CA_4_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_1_FOODS"
+      },
+      {
+       "series_id": "TX_1_HOBBIES"
+      },
+      {
+       "series_id": "TX_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_2_FOODS"
+      },
+      {
+       "series_id": "TX_2_HOBBIES"
+      },
+      {
+       "series_id": "TX_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_3_FOODS"
+      },
+      {
+       "series_id": "TX_3_HOBBIES"
+      },
+      {
+       "series_id": "TX_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_1_FOODS"
+      },
+      {
+       "series_id": "WI_1_HOBBIES"
+      },
+      {
+       "series_id": "WI_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_2_FOODS"
+      },
+      {
+       "series_id": "WI_2_HOBBIES"
+      },
+      {
+       "series_id": "WI_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_3_FOODS"
+      },
+      {
+       "series_id": "WI_3_HOBBIES"
+      },
+      {
+       "series_id": "WI_3_HOUSEHOLD"
+      }
+     ],
+     "error": null,
+     "result_hash": "f03e79f74dbeb9f9fc78bcfd23d90a8636a6810094bec0911c6d2c52cb099d2c"
+    }
+   },
+   {
+    "turn": 2,
+    "summary": "Compare CA_2_FOODS MAE in the review period against the prior four weeks.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "cmp2",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "CA_2_FOODS"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": null
+     }
+    },
+    "result": {
+     "call_id": "cmp2",
+     "ok": true,
+     "fields": {
+      "ca_2_foods__mae_period": 6.542,
+      "ca_2_foods__bias_period": 1.375,
+      "ca_2_foods__n_actual_period": 24,
+      "ca_2_foods__n_expected_period": 28,
+      "ca_2_foods__model_period": "synthetic_v3",
+      "ca_2_foods__horizons_period": "1-28",
+      "ca_2_foods__mae_window": 6.071,
+      "ca_2_foods__bias_window": -1.214,
+      "ca_2_foods__n_actual_window": 28,
+      "ca_2_foods__n_expected_window": 28,
+      "ca_2_foods__model_window": "synthetic_v3",
+      "ca_2_foods__horizons_window": "1-28",
+      "ca_2_foods__mae_delta": 0.47,
+      "ca_2_foods__bias_delta": 2.589
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "5410546acee5599220b3668682c9f1163218b6dd4cd4dab4cc740f671dad14f5"
+    }
+   },
+   {
+    "turn": 3,
+    "summary": "Verify actuals completeness, duplicates, model version and horizons so the MAE comparison is fair.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "dq3",
+     "args": {
+      "tool": "check_quality",
+      "series": [
+       "CA_2_FOODS"
+      ],
+      "days": {
+       "start_day": 141,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "dq3",
+     "ok": true,
+     "fields": {
+      "ca_2_foods__missing_days": 4,
+      "ca_2_foods__duplicate_rows": 0,
+      "ca_2_foods__coverage": 0.929,
+      "ca_2_foods__version_count": 1,
+      "ca_2_foods__horizon_range": "1-28"
+     },
+     "row_ids": [
+      "act__CA_2_FOODS__d0175",
+      "act__CA_2_FOODS__d0176",
+      "act__CA_2_FOODS__d0182",
+      "act__CA_2_FOODS__d0189"
+     ],
+     "table": [],
+     "error": null,
+     "result_hash": "694183a70c12a39518d1fa84693112897d208868272da6bf95917cb51c2621b0"
+    }
+   },
+   {
+    "turn": 4,
+    "summary": "The review period is missing four actual days, so the MAE comparison is not valid as computed.",
+    "observation_refs": [
+     "cmp2",
+     "dq3"
+    ],
+    "call": null,
+    "result": null
+   }
+  ],
+  "cost": {
+   "turns": 4,
+   "calls": 3,
+   "usd": 0.002004,
+   "seconds": 27.6
+  }
+ }
+}

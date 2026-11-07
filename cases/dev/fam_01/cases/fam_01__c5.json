@@ -2,7 +2,7 @@
   "case_id": "fam_01__c5",
   "family_id": "fam_01",
   "split": "dev",
-  "snapshot_id": "snap_5cc11c1f9116",
+  "snapshot_id": "snap_88c2f77a8b3d",
   "review_day": 196,
   "request_text": "CA_2 FOODS forecast error (MAE) looks worse in the review period, days 169-196, than in the four weeks before, days 141-168. Does the forecast model need investigating?",
   "canonical_scope": {
