@@ -2,7 +2,7 @@
 
 Code owns the numbers; the model owns bounded choices. An evidence-linked agent loop and offline evaluation suite for time-series review.
 
-**Status: in progress, weekend 3 of 7.** Built and tested: the contracts, the synthetic data and nine test cases, the gateway, five read-only tools, the stray-digit validator, and the agent loop (Google ADK, model via OpenRouter) with saved, replayable runs. The weekend-3 kill gate passed under a criterion revised after the results were seen (one confirming step allowed); by the original criterion it failed. Both are reported in [decision 0003](docs/decisions/0003-kill-gate-result.md). The baseline and the evaluation are not built yet. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
+**Status: in progress, weekend 4 of 7.** Built and tested: the contracts, the synthetic data and nine test cases, the gateway, five read-only tools, the stray-digit validator, and the agent loop (Google ADK, model via OpenRouter) with saved, replayable runs. The weekend-3 kill gate passed under a criterion revised after the results were seen (one confirming step allowed); by the original criterion it failed. Both are reported in [decision 0003](docs/decisions/0003-kill-gate-result.md). The scripted baseline is built and frozen (tag `baseline-frozen`), and the held-out seeds are sealed; the evaluation is not run yet. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
 
 ![System at a glance](docs/figures/02-system-at-a-glance.svg)
 
@@ -49,6 +49,7 @@ nbs/                            the source: explanation + code + worked examples
   09_validator.ipynb              rejects any number the model types instead of citing a tool
   10_agent.ipynb                  the ADK agent loop, run records and offline replay
   11_kill_gate.ipynb              the weekend-3 test on the matched pair, checked by code
+  12_baseline.ipynb               the scripted report the agent is compared with (frozen)
   90_explore_fixture_data.ipynb   a guided, charted look at the data
 src/agentic_forecast_review/    generated from nbs/
 cases/dev/                      test cases, answer key, run settings (snapshots rebuilt, not stored)

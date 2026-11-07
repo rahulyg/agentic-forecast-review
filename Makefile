@@ -1,4 +1,4 @@
-.PHONY: install export clean-nbs lint test nbtest all
+.PHONY: install export clean-nbs lint test nbtest seal all
 
 install:
 	uv sync --locked
@@ -25,9 +25,14 @@ test:
 nbtest:
 	uv run nbdev-test
 
+# The sealed held-out seeds still match their public manifest (no decryption).
+seal:
+	uv run verify-seal
+
 all:
 	$(MAKE) export
 	$(MAKE) clean-nbs
 	$(MAKE) lint
 	$(MAKE) test
 	$(MAKE) nbtest
+	$(MAKE) seal
