@@ -11,6 +11,7 @@ __all__ = [
     "ISSUE_DAYS",
     "HORIZON",
     "MODEL_VERSIONS",
+    "BASE_SCHEDULE",
     "ActualRow",
     "ForecastRow",
     "actual_row_id",
@@ -108,10 +109,17 @@ def build_actuals(rng: random.Random) -> tuple[ActualRow, ...]:
 
 
 # %% ../../nbs/06_generator.ipynb #50b1613fc04e484d9dc27ea47ddc9191
+BASE_SCHEDULE = tuple(
+    (issue_day, tuple(range(1, HORIZON + 1))) for issue_day in ISSUE_DAYS
+)
+
+
 def build_forecasts(
-    actuals: Sequence[ActualRow], rng: random.Random
+    actuals: Sequence[ActualRow],
+    rng: random.Random,
+    schedule: Sequence[tuple[int, Sequence[int]]] = BASE_SCHEDULE,
 ) -> tuple[ForecastRow, ...]:
-    """Both models' forecasts, 1 to HORIZON days ahead of each issue day."""
+    """Both models' forecasts for every (issue day, days ahead) in the schedule."""
     history: dict[str, list[Observation]] = {}
     for actual in actuals:
         observation = Observation(actual.series_id, actual.day, actual.value)
@@ -119,9 +127,9 @@ def build_forecasts(
 
     rows: list[ForecastRow] = []
     for series_id in sorted(history):
-        for issue_day in ISSUE_DAYS:
+        for issue_day, horizons in schedule:
             seen = history[series_id][:issue_day]
-            for horizon in range(1, HORIZON + 1):
+            for horizon in horizons:
                 naive = round(seasonal_naive(seen, period=7, horizon=horizon))
                 drifted = naive * (1 + 0.002 * horizon) + rng.gauss(0, 1.5)
                 values = {
@@ -178,9 +186,9 @@ class Snapshot:
             "seed": self.seed,
             "first_day": 1,
             "last_day": LAST_DAY,
-            "issue_days": list(ISSUE_DAYS),
-            "horizon": HORIZON,
-            "model_versions": list(MODEL_VERSIONS),
+            "issue_days": sorted({row.issue_day for row in self.forecasts}),
+            "horizon": max(row.horizon for row in self.forecasts),
+            "model_versions": sorted({row.model_version for row in self.forecasts}),
             "series": sorted({actual.series_id for actual in self.actuals}),
             "n_actual_rows": len(self.actuals),
             "n_forecast_rows": len(self.forecasts),

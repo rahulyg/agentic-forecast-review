@@ -43,16 +43,17 @@ nbs/                            the source: explanation + code + worked examples
   04_sealing.ipynb                verifier for the sealed held-out case seeds
   05_credentials.ipynb            OpenRouter API key lookup
   06_generator.ipynb              the synthetic sales snapshot: actuals, forecasts, row IDs
+  06b_cases.ipynb                 nine test cases with planted conditions, and the answer key
   90_explore_fixture_data.ipynb   a guided, charted look at the data
 src/agentic_forecast_review/    generated from nbs/
-cases/dev/                      generated snapshots
+cases/dev/                      test cases and the answer key (snapshots are rebuilt, not stored)
 tests/                          edge cases and rejection rules
 docs/                           the plan, decision records, figures, sealing, parking lot
 ```
 
 ## Verifying
 
-Everything runs offline with no paid model calls. CI regenerates the code from the notebooks, runs every notebook example and every test, and fails if the committed snapshot differs from a fresh run. Setup and commands are in [docs/development.md](docs/development.md).
+Everything runs offline with no paid model calls. CI regenerates the code from the notebooks, runs every notebook example and every test, and fails if the committed cases or answer key differ from a fresh build. Setup and commands are in [docs/development.md](docs/development.md).
 
 ## License
 

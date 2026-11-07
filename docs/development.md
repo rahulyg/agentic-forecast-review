@@ -21,8 +21,10 @@ make all         # export, strip outputs, lint, pytest, run the notebook example
 Notebooks show each function working on a normal example; `tests/` checks that bad
 input is rejected. Each check lives in one place only.
 
-Re-running `nbs/06_generator.ipynb` rewrites `cases/dev/fam_01/` with the same bytes;
-a test fails if the committed snapshot ever differs from a fresh run.
+Running `nbs/06b_cases.ipynb` writes the test cases, the answer key
+(`cases/dev/manifest.jsonl`) and the snapshots they use. Snapshots are rebuilt on demand
+and ignored by git; each case file pins its `snapshot_id`, and a test fails if the
+committed cases or answer key ever differ from a fresh build.
 
 Live model calls (from weekend 3) need `OPENROUTER_API_KEY` in the shell or in an
 ignored repo-root `.env`. Nothing in the current code calls a model.
