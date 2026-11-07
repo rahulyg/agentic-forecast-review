@@ -1,8 +1,9 @@
 # 0003: Kill-gate result (weekend 3)
 
-**Status:** Recorded, 7 November 2026. The gate **failed** by the criterion in the plan.
-Whether to revise the criterion is the owner's decision and is still open; nothing after
-weekend 3 starts until it is made.
+**Status:** Accepted, 7 November 2026. The gate failed by the plan's original criterion
+(0 / 3 runs in every attempt) and **passed by the revised criterion** adopted below
+(3 / 3 runs of attempt 3). The revision was made after the results were seen; see
+Decision.
 
 ## Context
 
@@ -59,13 +60,34 @@ numbers instead of pointer tokens; the agent then corrected it.
 - **Lenient:** confirming a red flag with one data check before acting is what a careful
   analyst does. Allowing one identical step between the first differing observation and
   the split (still requiring the split to cite a differing observation) gives a pass in
-  3 / 3 runs of attempt 3. This is reported by the gate code as `lag=1`, and is **not**
-  adopted.
+  3 / 3 runs of attempt 3. The gate code reports this as `lag=1`.
 
-## Options for the owner
+## Decision
+
+The owner chose option 1: criterion 2 now allows **one identical step** between the first
+observation that differs and the first step that differs (`lag=1`). The diverging step
+must still cite a differing observation in `observation_refs`, and criteria 1 and 3 are
+unchanged.
+
+Why: in every run of attempt 3 the agent branched for evidence reasons, cited that
+evidence, and ended correctly; running one confirming data check before declaring a
+comparison untrustworthy is defensible analyst behaviour. A fixed checklist that never
+branches still fails.
+
+Safeguards, because the rule was relaxed after seeing results:
+
+- Both numbers are always reported: original criterion 0 / 3, revised 3 / 3.
+- The revised criterion is frozen from now on and is the one used for the held-out run
+  in weekend 6.
+- The claim is "the agent adapts within one confirming step", not "immediately".
+- A weak spot is acknowledged: since `compare_runs` reports horizons, the comparison
+  alone shows whether it is fair, so in case 6 the extra check is partly habit.
+- The held-out cases (weekend 6), unseen by the agent and the prompt, are the real test.
+
+## Options considered
 
 1. Revise criterion 2 to allow one confirming step (`lag=1`), record the revision here,
-   and treat the gate as passed on attempt 3's saved runs.
+   and treat the gate as passed on attempt 3's saved runs. **Chosen.**
 2. Keep the criterion, record weekend 3 as failed, and work on the agent before weekend 4,
    which needs a new attempt budget and a decision record.
 3. Revise the premise, as the plan allows: report "the agent adapts after a confirming

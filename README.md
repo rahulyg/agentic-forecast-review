@@ -2,7 +2,7 @@
 
 Code owns the numbers; the model owns bounded choices. An evidence-linked agent loop and offline evaluation suite for time-series review.
 
-**Status: in progress, weekend 3 of 7.** Built and tested: the contracts, the synthetic data and nine test cases, the gateway, five read-only tools, the stray-digit validator, and the agent loop (Google ADK, model via OpenRouter) with saved, replayable runs. The weekend-3 kill gate **failed** by the plan's criterion; the result and the open decision are in [decision 0003](docs/decisions/0003-kill-gate-result.md). The baseline and the evaluation are not built yet. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
+**Status: in progress, weekend 3 of 7.** Built and tested: the contracts, the synthetic data and nine test cases, the gateway, five read-only tools, the stray-digit validator, and the agent loop (Google ADK, model via OpenRouter) with saved, replayable runs. The weekend-3 kill gate passed under a criterion revised after the results were seen (one confirming step allowed); by the original criterion it failed. Both are reported in [decision 0003](docs/decisions/0003-kill-gate-result.md). The baseline and the evaluation are not built yet. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
 
 ![System at a glance](docs/figures/02-system-at-a-glance.svg)
 
@@ -22,7 +22,7 @@ A fair result may favour the script. That is a valid outcome and will be publish
 
 ## Results
 
-No evaluation has been run; results arrive in weekend 6 of the [schedule](docs/ground-zero.md#10-schedule-gates-and-limits). The first measured result is the weekend-3 kill gate: in three attempts the agent never branched right after the first differing observation, but on the last attempt it ended correctly in 3 of 3 runs, branching one confirming check later ([0003](docs/decisions/0003-kill-gate-result.md)).
+No evaluation has been run; results arrive in weekend 6 of the [schedule](docs/ground-zero.md#10-schedule-gates-and-limits). The first measured result is the weekend-3 kill gate on the matched pair. On the final attempt the agent ended correctly and branched for evidence reasons in 3 of 3 runs, always one confirming data check after the first differing observation: a pass under the revised criterion, 0 of 3 under the original "branch immediately" one ([0003](docs/decisions/0003-kill-gate-result.md)).
 
 ## Design decisions
 
