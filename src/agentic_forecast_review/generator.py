@@ -21,6 +21,7 @@ __all__ = [
     "Snapshot",
     "generate",
     "write_snapshot",
+    "read_snapshot",
 ]
 
 # %% ../../nbs/06_generator.ipynb #fa97b99f9dca4d179f19c77453c28ddf
@@ -29,7 +30,7 @@ import hashlib
 import io
 import json
 import random
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, fields
 from pathlib import Path
 
@@ -118,6 +119,7 @@ def build_forecasts(
     actuals: Sequence[ActualRow],
     rng: random.Random,
     schedule: Sequence[tuple[int, Sequence[int]]] = BASE_SCHEDULE,
+    noise_sd: Callable[[int], float] = lambda horizon: 1.5,
 ) -> tuple[ForecastRow, ...]:
     """Both models' forecasts for every (issue day, days ahead) in the schedule."""
     history: dict[str, list[Observation]] = {}
@@ -131,7 +133,9 @@ def build_forecasts(
             seen = history[series_id][:issue_day]
             for horizon in horizons:
                 naive = round(seasonal_naive(seen, period=7, horizon=horizon))
-                drifted = naive * (1 + 0.002 * horizon) + rng.gauss(0, 1.5)
+                drifted = naive * (1 + 0.002 * horizon) + rng.gauss(
+                    0, noise_sd(horizon)
+                )
                 values = {
                     "seasonal_naive_v1": naive,
                     "synthetic_v3": max(0, round(drifted)),
@@ -222,3 +226,34 @@ def write_snapshot(snapshot: Snapshot, folder: Path) -> None:
     folder.mkdir(parents=True, exist_ok=True)
     for name, text in snapshot.files().items():
         (folder / name).write_text(text, encoding="utf-8", newline="")
+
+
+def _read_rows(
+    path: Path, row_type: type[ActualRow] | type[ForecastRow]
+) -> list[dict[str, str | int]]:
+    types = {field.name: field.type for field in fields(row_type)}
+    with path.open(newline="", encoding="utf-8") as handle:
+        return [
+            {
+                name: int(value) if types[name] is int else value
+                for name, value in row.items()
+            }
+            for row in csv.DictReader(handle)
+        ]
+
+
+def read_snapshot(folder: Path) -> Snapshot:
+    """Load a snapshot written by ``write_snapshot``; refuse files that were changed."""
+    meta = json.loads((folder / "snapshot.json").read_text(encoding="utf-8"))
+    actuals = tuple(
+        ActualRow(**row)  # type: ignore[arg-type]
+        for row in _read_rows(folder / "actuals.csv", ActualRow)
+    )
+    forecasts = tuple(
+        ForecastRow(**row)  # type: ignore[arg-type]
+        for row in _read_rows(folder / "forecasts.csv", ForecastRow)
+    )
+    snapshot = Snapshot(int(meta["seed"]), actuals, forecasts)
+    if snapshot.snapshot_id != meta["snapshot_id"]:
+        raise ValueError(f"files in {folder} do not match their snapshot_id")
+    return snapshot

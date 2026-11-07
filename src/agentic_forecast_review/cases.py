@@ -9,15 +9,18 @@ __all__ = [
     "WINDOW",
     "MISSING_DAYS",
     "DUPLICATE_DAYS",
+    "DOUBLE_LOAD",
+    "SWAPPED_MODEL_NOISE",
     "BIAS_FACTOR",
     "WEEKLY_SCHEDULE",
     "STANDARD_REQUEST",
     "VAGUE_REQUEST",
     "CAUSE_REQUEST",
     "CASE_SPECS",
+    "growing_noise",
     "drop_actuals",
     "duplicate_actuals",
-    "relabel_model",
+    "swap_model",
     "scale_forecasts",
     "reschedule",
     "plant",
@@ -27,12 +30,13 @@ __all__ = [
     "build_family",
     "write_family",
     "write_jsonl",
+    "load_case",
 ]
 
 # %% ../../nbs/06b_cases.ipynb #468aca6a1e7641ed92dd9735d736b88b
 import dataclasses
 import random
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -41,10 +45,12 @@ from pydantic import BaseModel
 from agentic_forecast_review.generator import (
     SEED,
     ActualRow,
+    ForecastRow,
     Snapshot,
     build_forecasts,
     forecast_row_id,
     generate,
+    read_snapshot,
     write_snapshot,
 )
 from agentic_forecast_review.schemas import (
@@ -69,11 +75,18 @@ WINDOW = DayRange(start_day=141, end_day=168)
 
 MISSING_DAYS = (175, 176, 182, 189)
 DUPLICATE_DAYS = (171, 178, 185)
+DOUBLE_LOAD = 2.0  # the duplicate copy counts the units twice
+SWAPPED_MODEL_NOISE = 2.0  # the window's other model sat close to the actuals
 BIAS_FACTOR = 0.85
 WEEKLY_SCHEDULE = (
     *((day, tuple(range(1, 8))) for day in (140, 147, 154, 161)),  # window: 1-7 ahead
     *((day, tuple(range(22, 29))) for day in (147, 154, 161, 168)),  # period: 22-28
 )
+
+
+def growing_noise(horizon: int) -> float:
+    """Forecast noise that grows with the days ahead, as real forecast error does."""
+    return 1.5 + 0.5 * horizon
 
 
 # %% ../../nbs/06b_cases.ipynb #855923b5a5374277898f539e378df21b
@@ -88,24 +101,43 @@ def drop_actuals(snapshot: Snapshot, series_id: str, days: Sequence[int]) -> Sna
 
 
 def duplicate_actuals(
-    snapshot: Snapshot, series_id: str, days: Sequence[int]
+    snapshot: Snapshot, series_id: str, days: Sequence[int], scale: float = 1.0
 ) -> Snapshot:
-    """Repeat one series' actual rows on the given days."""
+    """Load one series' actual rows twice on the given days; the copy's units × ``scale``."""
     rows: list[ActualRow] = []
     for row in snapshot.actuals:
         rows.append(row)
         if row.series_id == series_id and row.day in days:
-            rows.append(row)
+            rows.append(dataclasses.replace(row, value=round(row.value * scale)))
     return dataclasses.replace(snapshot, actuals=tuple(rows))
 
 
-def relabel_model(snapshot: Snapshot, issue_day: int, old: str, new: str) -> Snapshot:
-    """Give one issue day's forecasts from model ``old`` the version label ``new``."""
+def swap_model(
+    snapshot: Snapshot,
+    issue_day: int,
+    old: str,
+    new: str,
+    rng: random.Random,
+    noise_sd: float,
+) -> Snapshot:
+    """Replace one issue day's forecasts from ``old`` by another model, ``new``.
+
+    The other model's forecasts sit close to what actually sold (actual ± noise), so its
+    error is lower than the model it is compared against.
+    """
+    actual = {(row.series_id, row.day): row.value for row in snapshot.actuals}
     rows = tuple(
-        dataclasses.replace(
-            row,
-            model_version=new,
-            row_id=forecast_row_id(row.series_id, new, row.issue_day, row.horizon),
+        ForecastRow(
+            forecast_row_id(row.series_id, new, row.issue_day, row.horizon),
+            row.series_id,
+            new,
+            row.issue_day,
+            row.target_day,
+            row.horizon,
+            max(
+                0,
+                round(actual[(row.series_id, row.target_day)] + rng.gauss(0, noise_sd)),
+            ),
         )
         if row.issue_day == issue_day and row.model_version == old
         else row
@@ -134,10 +166,11 @@ def reschedule(
     keep_issue_days: Sequence[int],
     schedule: Sequence[tuple[int, Sequence[int]]],
     rng: random.Random,
+    noise_sd: Callable[[int], float],
 ) -> Snapshot:
     """Keep the forecasts of some issue days; remake the rest from a new schedule."""
     kept = [row for row in snapshot.forecasts if row.issue_day in keep_issue_days]
-    remade = build_forecasts(snapshot.actuals, rng, schedule)
+    remade = build_forecasts(snapshot.actuals, rng, schedule, noise_sd)
     rows = sorted(
         [*kept, *remade],
         key=lambda row: (row.series_id, row.issue_day, row.horizon, row.model_version),
@@ -152,12 +185,15 @@ def plant(base: Snapshot, condition: PlantedCondition) -> Snapshot:
         case PlantedCondition.MISSING_DATES:
             return drop_actuals(base, SERIES_ID, MISSING_DAYS)
         case PlantedCondition.DUPLICATE_RECORDS:
-            return duplicate_actuals(base, SERIES_ID, DUPLICATE_DAYS)
+            return duplicate_actuals(base, SERIES_ID, DUPLICATE_DAYS, DOUBLE_LOAD)
         case PlantedCondition.VERSION_MISMATCH:
-            return relabel_model(base, 140, "synthetic_v3", "synthetic_v2")
+            rng = random.Random(f"{base.seed}/{condition}")
+            return swap_model(
+                base, 140, "synthetic_v3", "synthetic_v2", rng, SWAPPED_MODEL_NOISE
+            )
         case PlantedCondition.HORIZON_MISMATCH:
             rng = random.Random(f"{base.seed}/{condition}")
-            return reschedule(base, (112,), WEEKLY_SCHEDULE, rng)
+            return reschedule(base, (112,), WEEKLY_SCHEDULE, rng, growing_noise)
         case PlantedCondition.BIAS_SHIFT:
             return scale_forecasts(base, 168, "synthetic_v3", "FOODS", BIAS_FACTOR)
         case _:
@@ -299,3 +335,12 @@ def write_jsonl(entries: Sequence[BaseModel], path: Path) -> None:
     """Write one JSON line per entry (the manifest, the run settings)."""
     lines = "".join(entry.model_dump_json() + "\n" for entry in entries)
     path.write_text(lines, encoding="utf-8")
+
+
+def load_case(root: Path, case_id: str) -> tuple[Case, Snapshot]:
+    """A case from its file under ``root``, with the snapshot it pins."""
+    family_id = case_id.split("__")[0]
+    path = root / family_id / "cases" / f"{case_id}.json"
+    case = Case.model_validate_json(path.read_text(encoding="utf-8"))
+    snapshot = read_snapshot(root / family_id / "snapshots" / case.snapshot_id)
+    return case, snapshot

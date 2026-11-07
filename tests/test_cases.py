@@ -101,7 +101,9 @@ def test_version_and_bias_changes_touch_only_their_forecasts(family: Family) -> 
         for old, new in pairs:
             assert old.issue_day == issue_day and old.model_version == "synthetic_v3"
             if condition is PlantedCondition.VERSION_MISMATCH:
-                assert new.model_version == "synthetic_v2" and new.value == old.value
+                assert (
+                    new.model_version == "synthetic_v2" and new.horizon == old.horizon
+                )
             else:
                 assert old.series_id.endswith("_FOODS") and new.value < old.value
 
