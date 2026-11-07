@@ -26,7 +26,7 @@ __all__ = [
     "Family",
     "build_family",
     "write_family",
-    "write_manifest",
+    "write_jsonl",
 ]
 
 # %% ../../nbs/06b_cases.ipynb #468aca6a1e7641ed92dd9735d736b88b
@@ -35,6 +35,8 @@ import random
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
+
+from pydantic import BaseModel
 
 from agentic_forecast_review.generator import (
     SEED,
@@ -52,8 +54,10 @@ from agentic_forecast_review.schemas import (
     ManifestEntry,
     Metric,
     PlantedCondition,
+    RunSetting,
     Split,
     TerminalState,
+    ToolName,
 )
 
 # %% ../../nbs/06b_cases.ipynb #1d2f76894f8b4e08b9e43739ded70c3c
@@ -181,6 +185,7 @@ class CaseSpec:
     expected: TerminalState
     request_text: str = STANDARD_REQUEST
     matched_with: int | None = None
+    fail_first_call_to: ToolName | None = None
 
 
 CASE_SPECS = (
@@ -195,9 +200,12 @@ CASE_SPECS = (
     CaseSpec(4, PlantedCondition.VERSION_MISMATCH, TerminalState.STOP_UNTRUSTWORTHY),
     CaseSpec(5, PlantedCondition.HORIZON_MISMATCH, TerminalState.STOP_UNTRUSTWORTHY),
     CaseSpec(6, PlantedCondition.BIAS_SHIFT, TerminalState.ANSWER, matched_with=2),
-    CaseSpec(
-        7, PlantedCondition.TOOL_FAILURE, TerminalState.ANSWER
-    ),  # fails once; a retry fits the budget
+    CaseSpec(  # the tool fails once; a retry fits the budget
+        7,
+        PlantedCondition.TOOL_FAILURE,
+        TerminalState.ANSWER,
+        fail_first_call_to=ToolName.COMPARE_RUNS,
+    ),
     CaseSpec(
         8,
         PlantedCondition.AMBIGUOUS_REQUEST,
@@ -223,14 +231,16 @@ class Family:
     snapshots: dict[str, Snapshot]
     cases: tuple[Case, ...]
     manifest: tuple[ManifestEntry, ...]
+    run_settings: tuple[RunSetting, ...]
 
 
 def build_family(seed: int = SEED) -> Family:
-    """The family's snapshots, cases and manifest. The same seed gives the same family."""
+    """Snapshots, cases, manifest and run settings. The same seed gives the same family."""
     base = generate(seed)
     snapshots: dict[str, Snapshot] = {}
     cases: list[Case] = []
     manifest: list[ManifestEntry] = []
+    run_settings: list[RunSetting] = []
     for spec in CASE_SPECS:
         snapshot = plant(base, spec.planted)
         snapshots[snapshot.snapshot_id] = snapshot
@@ -263,7 +273,14 @@ def build_family(seed: int = SEED) -> Family:
                 else None,
             )
         )
-    return Family(snapshots, tuple(cases), tuple(manifest))
+        if spec.fail_first_call_to is not None:
+            run_settings.append(
+                RunSetting(
+                    case_id=case_id(spec.number),
+                    fail_first_call_to=spec.fail_first_call_to,
+                )
+            )
+    return Family(snapshots, tuple(cases), tuple(manifest), tuple(run_settings))
 
 
 # %% ../../nbs/06b_cases.ipynb #512cf474a2ab4cf28e70dc040a62656e
@@ -278,7 +295,7 @@ def write_family(family: Family, root: Path) -> None:
         (folder / f"{case.case_id}.json").write_text(text, encoding="utf-8")
 
 
-def write_manifest(entries: Sequence[ManifestEntry], path: Path) -> None:
-    """Write the answer key, one JSON line per case."""
+def write_jsonl(entries: Sequence[BaseModel], path: Path) -> None:
+    """Write one JSON line per entry (the manifest, the run settings)."""
     lines = "".join(entry.model_dump_json() + "\n" for entry in entries)
     path.write_text(lines, encoding="utf-8")

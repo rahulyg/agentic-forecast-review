@@ -22,6 +22,7 @@ __all__ = [
     "CanonicalScope",
     "Case",
     "ManifestEntry",
+    "RunSetting",
     "ResolveContextArgs",
     "CompareRunsArgs",
     "InspectSeriesArgs",
@@ -209,6 +210,13 @@ class ManifestEntry(_Frozen):
     def _sorted_missing(self, missing: frozenset[MissingScope]) -> list[str]:
         """A stable order, so the manifest file is the same on every run."""
         return sorted(missing)
+
+
+class RunSetting(_Frozen):
+    """How the harness runs one case. Read by the gateway only, never by the model."""
+
+    case_id: Identifier
+    fail_first_call_to: ToolName | None = None
 
 
 # %% ../../nbs/03_schemas.ipynb #504fb2a444614c0babb325280ed9130a

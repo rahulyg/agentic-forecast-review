@@ -44,9 +44,10 @@ nbs/                            the source: explanation + code + worked examples
   05_credentials.ipynb            OpenRouter API key lookup
   06_generator.ipynb              the synthetic sales snapshot: actuals, forecasts, row IDs
   06b_cases.ipynb                 nine test cases with planted conditions, and the answer key
+  08_gateway.ipynb                the single door for tool requests: checks, cutoff, fingerprints
   90_explore_fixture_data.ipynb   a guided, charted look at the data
 src/agentic_forecast_review/    generated from nbs/
-cases/dev/                      test cases and the answer key (snapshots are rebuilt, not stored)
+cases/dev/                      test cases, answer key, run settings (snapshots rebuilt, not stored)
 tests/                          edge cases and rejection rules
 docs/                           the plan, decision records, figures, sealing, parking lot
 ```

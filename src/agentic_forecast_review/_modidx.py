@@ -54,8 +54,8 @@ d = {
                 "cases.html#write_family",
                 "agentic_forecast_review/cases.py",
             ),
-            "agentic_forecast_review.cases.write_manifest": (
-                "cases.html#write_manifest",
+            "agentic_forecast_review.cases.write_jsonl": (
+                "cases.html#write_jsonl",
                 "agentic_forecast_review/cases.py",
             ),
         },
@@ -95,6 +95,52 @@ d = {
             "agentic_forecast_review.fixtures.split_at_origin": (
                 "fixtures.html#split_at_origin",
                 "agentic_forecast_review/fixtures.py",
+            ),
+        },
+        "agentic_forecast_review.gateway": {
+            "agentic_forecast_review.gateway.Gateway": (
+                "gateway.html#gateway",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.Gateway.__init__": (
+                "gateway.html#gateway.__init__",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.Gateway._failed": (
+                "gateway.html#gateway._failed",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.Gateway.call": (
+                "gateway.html#gateway.call",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.Reply": (
+                "gateway.html#reply",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.ToolOutput": (
+                "gateway.html#tooloutput",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway._call_id": (
+                "gateway.html#_call_id",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway._short": (
+                "gateway.html#_short",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.load_run_settings": (
+                "gateway.html#load_run_settings",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.requested_days": (
+                "gateway.html#requested_days",
+                "agentic_forecast_review/gateway.py",
+            ),
+            "agentic_forecast_review.gateway.result_hash": (
+                "gateway.html#result_hash",
+                "agentic_forecast_review/gateway.py",
             ),
         },
         "agentic_forecast_review.generator": {
@@ -284,6 +330,10 @@ d = {
             ),
             "agentic_forecast_review.schemas.ResolveContextArgs": (
                 "schemas.html#resolvecontextargs",
+                "agentic_forecast_review/schemas.py",
+            ),
+            "agentic_forecast_review.schemas.RunSetting": (
+                "schemas.html#runsetting",
                 "agentic_forecast_review/schemas.py",
             ),
             "agentic_forecast_review.schemas.Split": (
