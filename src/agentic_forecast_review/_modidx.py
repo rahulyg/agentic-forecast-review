@@ -9,6 +9,60 @@ d = {
         "lib_path": "src/agentic_forecast_review",
     },
     "syms": {
+        "agentic_forecast_review.agent": {
+            "agentic_forecast_review.agent.AgentRun": (
+                "agent.html#agentrun",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.AgentRun.__init__": (
+                "agent.html#agentrun.__init__",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.AgentRun._refs": (
+                "agent.html#agentrun._refs",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.AgentRun.finish": (
+                "agent.html#agentrun.finish",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.AgentRun.incomplete": (
+                "agent.html#agentrun.incomplete",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.AgentRun.request": (
+                "agent.html#agentrun.request",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.ClaimInput": (
+                "agent.html#claiminput",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent._range": (
+                "agent.html#_range",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.model_tools": (
+                "agent.html#model_tools",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.replay": (
+                "agent.html#replay",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.run_agent": (
+                "agent.html#run_agent",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.run_agent_async": (
+                "agent.html#run_agent_async",
+                "agentic_forecast_review/agent.py",
+            ),
+            "agentic_forecast_review.agent.save_run": (
+                "agent.html#save_run",
+                "agentic_forecast_review/agent.py",
+            ),
+        },
         "agentic_forecast_review.cases": {
             "agentic_forecast_review.cases.CaseSpec": (
                 "cases.html#casespec",
@@ -221,6 +275,36 @@ d = {
                 "agentic_forecast_review/generator.py",
             ),
         },
+        "agentic_forecast_review.kill_gate": {
+            "agentic_forecast_review.kill_gate.PairCheck": (
+                "kill_gate.html#paircheck",
+                "agentic_forecast_review/kill_gate.py",
+            ),
+            "agentic_forecast_review.kill_gate.PairCheck.passed": (
+                "kill_gate.html#paircheck.passed",
+                "agentic_forecast_review/kill_gate.py",
+            ),
+            "agentic_forecast_review.kill_gate.check_pair": (
+                "kill_gate.html#check_pair",
+                "agentic_forecast_review/kill_gate.py",
+            ),
+            "agentic_forecast_review.kill_gate.evidence": (
+                "kill_gate.html#evidence",
+                "agentic_forecast_review/kill_gate.py",
+            ),
+            "agentic_forecast_review.kill_gate.gate": (
+                "kill_gate.html#gate",
+                "agentic_forecast_review/kill_gate.py",
+            ),
+            "agentic_forecast_review.kill_gate.load_runs": (
+                "kill_gate.html#load_runs",
+                "agentic_forecast_review/kill_gate.py",
+            ),
+            "agentic_forecast_review.kill_gate.signature": (
+                "kill_gate.html#signature",
+                "agentic_forecast_review/kill_gate.py",
+            ),
+        },
         "agentic_forecast_review.metrics": {
             "agentic_forecast_review.metrics._check_pair": (
                 "metrics.html#_check_pair",
@@ -336,8 +420,16 @@ d = {
                 "schemas.html#packet._consistent",
                 "agentic_forecast_review/schemas.py",
             ),
+            "agentic_forecast_review.schemas.Packet._fill": (
+                "schemas.html#packet._fill",
+                "agentic_forecast_review/schemas.py",
+            ),
             "agentic_forecast_review.schemas.Packet.render": (
                 "schemas.html#packet.render",
+                "agentic_forecast_review/schemas.py",
+            ),
+            "agentic_forecast_review.schemas.Packet.render_not_established": (
+                "schemas.html#packet.render_not_established",
                 "agentic_forecast_review/schemas.py",
             ),
             "agentic_forecast_review.schemas.PlantedCondition": (

@@ -5,6 +5,9 @@ description = "Code owns the numbers; the model owns bounded choices. An evidenc
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "google-adk>=2.14.0",
+    "litellm>=1.108.2",
+    "mcp>=2.3.0",
     "pydantic>=2.13.5",
 ]
 

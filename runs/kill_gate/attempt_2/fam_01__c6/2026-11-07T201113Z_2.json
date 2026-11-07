@@ -1,0 +1,680 @@
+{
+ "case_id": "fam_01__c6",
+ "snapshot_id": "snap_d27641da87ef",
+ "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+ "temperature": 0.0,
+ "prompt_sha256": "420716c8a42509c9154b05866c893281d910dd59ec8df642dc277c592b288310",
+ "started_at": "2026-11-07T20:11:13+00:00",
+ "tokens": {
+  "prompt": 25699,
+  "completion": 3724
+ },
+ "error": null,
+ "notes": [
+  "finish refused: stray digits {'claims[0]': ['28', '28', '1-28']}"
+ ],
+ "requests": [
+  {
+   "request": {
+    "tool": "resolve_context"
+   },
+   "reason": "Establish the series identifiers, days, and model versions in this snapshot before comparing.",
+   "based_on": []
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "CA_2_FOODS"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    }
+   },
+   "reason": "Compare MAE in the review period against the prior four-week window for CA_2_FOODS.",
+   "based_on": []
+  },
+  {
+   "request": {
+    "tool": "check_quality",
+    "series": [
+     "CA_2_FOODS"
+    ],
+    "days": {
+     "start_day": 141,
+     "end_day": 196
+    }
+   },
+   "reason": "Verify CA_2_FOODS has no missing or duplicate rows and consistent horizons across both windows.",
+   "based_on": [
+    "ctx1",
+    "cmp2"
+   ]
+  },
+  {
+   "request": {
+    "tool": "inspect_series",
+    "series_id": "CA_2_FOODS",
+    "days": {
+     "start_day": 169,
+     "end_day": 196
+    }
+   },
+   "reason": "Inspect daily actuals, forecasts and horizons in the review period to see the source of the error rise.",
+   "based_on": [
+    "ctx1",
+    "cmp2"
+   ]
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "CA_2_FOODS"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    },
+    "model_version": "seasonal_naive_v1"
+   },
+   "reason": "Check whether the benchmark also degrades in the review period, to interpret if the rise is model-specific or series-wide.",
+   "based_on": [
+    "cmp2",
+    "dq3",
+    "ins4"
+   ]
+  }
+ ],
+ "packet": {
+  "case_id": "fam_01__c6",
+  "runner": "agent",
+  "snapshot_id": "snap_d27641da87ef",
+  "terminal_state": "ANSWER",
+  "claims": [
+   {
+    "label": "FINDING",
+    "template": "The comparison is fair: CA_2_FOODS has complete actuals on both sides (all expected rows found in both the review period and the prior window), no missing days, no duplicate rows, full coverage, a single model version label, and a horizon range spanning from one to the full forecast length.",
+    "row_refs": [
+     "cmp2",
+     "dq3"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "Under the model under review (synthetic_v3), CA_2_FOODS MAE rose from the earlier window to the review period, with MAE delta positive, while bias went from near zero to strongly negative, indicating systematic under-forecasting in the review period.",
+    "row_refs": [
+     "cmp2"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "Day-by-day review-period rows show mean actual above mean forecast and a persistently negative recent bias, with under-forecasts spread across the whole period rather than isolated at its end.",
+    "row_refs": [
+     "ins4"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "The seasonal_naive_v1 benchmark over the same series and windows did not degrade: its review-period MAE was no worse than its earlier-window MAE and its review-period bias was near zero, also with complete actuals on both sides.",
+    "row_refs": [
+     "cmp5"
+    ]
+   },
+   {
+    "label": "INFERENCE",
+    "template": "Because the benchmark held steady while synthetic_v3 degraded and turned systematically under-forecasting, the error rise is specific to the model under review rather than a series-wide loss of predictability, so the forecast model warrants investigation.",
+    "row_refs": [
+     "cmp2",
+     "cmp5",
+     "ins4"
+    ]
+   }
+  ],
+  "clarification": null,
+  "not_established": [
+   "The root cause of the under-forecasting (for example, a demand shift or model parameter issue) is not measured by any available tool."
+  ],
+  "trace": [
+   {
+    "turn": 1,
+    "summary": "Establish the series identifiers, days, and model versions in this snapshot before comparing.",
+    "observation_refs": [],
+    "call": {
+     "call_id": "ctx1",
+     "args": {
+      "tool": "resolve_context"
+     }
+    },
+    "result": {
+     "call_id": "ctx1",
+     "ok": true,
+     "fields": {
+      "snapshot_id": "snap_d27641da87ef",
+      "first_day": 1,
+      "last_day": 196,
+      "review_day": 196,
+      "n_series": 30,
+      "model_versions": "seasonal_naive_v1,synthetic_v3",
+      "benchmark_model": "seasonal_naive_v1",
+      "issue_days": "112,140,168",
+      "metrics": "mae,signed_bias"
+     },
+     "row_ids": [],
+     "table": [
+      {
+       "series_id": "CA_1_FOODS"
+      },
+      {
+       "series_id": "CA_1_HOBBIES"
+      },
+      {
+       "series_id": "CA_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_2_FOODS"
+      },
+      {
+       "series_id": "CA_2_HOBBIES"
+      },
+      {
+       "series_id": "CA_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_3_FOODS"
+      },
+      {
+       "series_id": "CA_3_HOBBIES"
+      },
+      {
+       "series_id": "CA_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_4_FOODS"
+      },
+      {
+       "series_id": "CA_4_HOBBIES"
+      },
+      {
+       "series_id": "CA_4_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_1_FOODS"
+      },
+      {
+       "series_id": "TX_1_HOBBIES"
+      },
+      {
+       "series_id": "TX_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_2_FOODS"
+      },
+      {
+       "series_id": "TX_2_HOBBIES"
+      },
+      {
+       "series_id": "TX_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_3_FOODS"
+      },
+      {
+       "series_id": "TX_3_HOBBIES"
+      },
+      {
+       "series_id": "TX_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_1_FOODS"
+      },
+      {
+       "series_id": "WI_1_HOBBIES"
+      },
+      {
+       "series_id": "WI_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_2_FOODS"
+      },
+      {
+       "series_id": "WI_2_HOBBIES"
+      },
+      {
+       "series_id": "WI_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_3_FOODS"
+      },
+      {
+       "series_id": "WI_3_HOBBIES"
+      },
+      {
+       "series_id": "WI_3_HOUSEHOLD"
+      }
+     ],
+     "error": null,
+     "result_hash": "ef9c971a0dec02728707613b3a1a9db305152d4307f17a157c15b3604a219cc9"
+    }
+   },
+   {
+    "turn": 2,
+    "summary": "Compare MAE in the review period against the prior four-week window for CA_2_FOODS.",
+    "observation_refs": [],
+    "call": {
+     "call_id": "cmp2",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "CA_2_FOODS"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": null
+     }
+    },
+    "result": {
+     "call_id": "cmp2",
+     "ok": true,
+     "fields": {
+      "ca_2_foods__mae_period": 9.036,
+      "ca_2_foods__bias_period": -8.679,
+      "ca_2_foods__n_actual_period": 28,
+      "ca_2_foods__n_expected_period": 28,
+      "ca_2_foods__model_period": "synthetic_v3",
+      "ca_2_foods__mae_window": 6.071,
+      "ca_2_foods__bias_window": -1.214,
+      "ca_2_foods__n_actual_window": 28,
+      "ca_2_foods__n_expected_window": 28,
+      "ca_2_foods__model_window": "synthetic_v3",
+      "ca_2_foods__mae_delta": 2.964,
+      "ca_2_foods__bias_delta": -7.464
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "566a3ed1e23ac2286e90b912f6dc97b2cdf8b3ccbcece4e4b8c1c26c0d464457"
+    }
+   },
+   {
+    "turn": 3,
+    "summary": "Verify CA_2_FOODS has no missing or duplicate rows and consistent horizons across both windows.",
+    "observation_refs": [
+     "ctx1",
+     "cmp2"
+    ],
+    "call": {
+     "call_id": "dq3",
+     "args": {
+      "tool": "check_quality",
+      "series": [
+       "CA_2_FOODS"
+      ],
+      "days": {
+       "start_day": 141,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "dq3",
+     "ok": true,
+     "fields": {
+      "ca_2_foods__missing_days": 0,
+      "ca_2_foods__duplicate_rows": 0,
+      "ca_2_foods__coverage": 1.0,
+      "ca_2_foods__version_count": 1,
+      "ca_2_foods__horizon_range": "1-28"
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "dd7b9d293a3dbeb263028b169610dda6195a514cfc798280301c55630415b9b9"
+    }
+   },
+   {
+    "turn": 4,
+    "summary": "Inspect daily actuals, forecasts and horizons in the review period to see the source of the error rise.",
+    "observation_refs": [
+     "ctx1",
+     "cmp2"
+    ],
+    "call": {
+     "call_id": "ins4",
+     "args": {
+      "tool": "inspect_series",
+      "series_id": "CA_2_FOODS",
+      "days": {
+       "start_day": 169,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "ins4",
+     "ok": true,
+     "fields": {
+      "n_days": 28,
+      "mean_actual": 64.893,
+      "mean_forecast": 56.214,
+      "bias_last_7": -8.429,
+      "bias_last_14": -9.571
+     },
+     "row_ids": [
+      "act__CA_2_FOODS__d0169",
+      "act__CA_2_FOODS__d0170",
+      "act__CA_2_FOODS__d0171",
+      "act__CA_2_FOODS__d0172",
+      "act__CA_2_FOODS__d0173",
+      "act__CA_2_FOODS__d0174",
+      "act__CA_2_FOODS__d0175",
+      "act__CA_2_FOODS__d0176",
+      "act__CA_2_FOODS__d0177",
+      "act__CA_2_FOODS__d0178",
+      "act__CA_2_FOODS__d0179",
+      "act__CA_2_FOODS__d0180",
+      "act__CA_2_FOODS__d0181",
+      "act__CA_2_FOODS__d0182",
+      "act__CA_2_FOODS__d0183",
+      "act__CA_2_FOODS__d0184",
+      "act__CA_2_FOODS__d0185",
+      "act__CA_2_FOODS__d0186",
+      "act__CA_2_FOODS__d0187",
+      "act__CA_2_FOODS__d0188",
+      "act__CA_2_FOODS__d0189",
+      "act__CA_2_FOODS__d0190",
+      "act__CA_2_FOODS__d0191",
+      "act__CA_2_FOODS__d0192",
+      "act__CA_2_FOODS__d0193",
+      "act__CA_2_FOODS__d0194",
+      "act__CA_2_FOODS__d0195",
+      "act__CA_2_FOODS__d0196"
+     ],
+     "table": [
+      {
+       "day": 169,
+       "actual": 58,
+       "forecast": 42,
+       "horizon": 1,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 170,
+       "actual": 53,
+       "forecast": 51,
+       "horizon": 2,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 171,
+       "actual": 47,
+       "forecast": 46,
+       "horizon": 3,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 172,
+       "actual": 62,
+       "forecast": 42,
+       "horizon": 4,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 173,
+       "actual": 67,
+       "forecast": 65,
+       "horizon": 5,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 174,
+       "actual": 78,
+       "forecast": 70,
+       "horizon": 6,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 175,
+       "actual": 78,
+       "forecast": 68,
+       "horizon": 7,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 176,
+       "actual": 58,
+       "forecast": 48,
+       "horizon": 8,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 177,
+       "actual": 57,
+       "forecast": 51,
+       "horizon": 9,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 178,
+       "actual": 53,
+       "forecast": 47,
+       "horizon": 10,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 179,
+       "actual": 57,
+       "forecast": 43,
+       "horizon": 11,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 180,
+       "actual": 58,
+       "forecast": 63,
+       "horizon": 12,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 181,
+       "actual": 78,
+       "forecast": 69,
+       "horizon": 13,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 182,
+       "actual": 80,
+       "forecast": 70,
+       "horizon": 14,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 183,
+       "actual": 64,
+       "forecast": 47,
+       "horizon": 15,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 184,
+       "actual": 53,
+       "forecast": 51,
+       "horizon": 16,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 185,
+       "actual": 54,
+       "forecast": 48,
+       "horizon": 17,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 186,
+       "actual": 65,
+       "forecast": 42,
+       "horizon": 18,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 187,
+       "actual": 66,
+       "forecast": 63,
+       "horizon": 19,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 188,
+       "actual": 84,
+       "forecast": 74,
+       "horizon": 20,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 189,
+       "actual": 85,
+       "forecast": 71,
+       "horizon": 21,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 190,
+       "actual": 58,
+       "forecast": 46,
+       "horizon": 22,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 191,
+       "actual": 60,
+       "forecast": 53,
+       "horizon": 23,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 192,
+       "actual": 52,
+       "forecast": 49,
+       "horizon": 24,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 193,
+       "actual": 59,
+       "forecast": 44,
+       "horizon": 25,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 194,
+       "actual": 68,
+       "forecast": 65,
+       "horizon": 26,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 195,
+       "actual": 82,
+       "forecast": 74,
+       "horizon": 27,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 196,
+       "actual": 83,
+       "forecast": 72,
+       "horizon": 28,
+       "model": "synthetic_v3"
+      }
+     ],
+     "error": null,
+     "result_hash": "a5edf159f6bd5eccec55a36b90f6ca10f359cf7cde1673561fc70b873f7af219"
+    }
+   },
+   {
+    "turn": 5,
+    "summary": "Check whether the benchmark also degrades in the review period, to interpret if the rise is model-specific or series-wide.",
+    "observation_refs": [
+     "cmp2",
+     "dq3"
+    ],
+    "call": {
+     "call_id": "cmp5",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "CA_2_FOODS"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": "seasonal_naive_v1"
+     }
+    },
+    "result": {
+     "call_id": "cmp5",
+     "ok": true,
+     "fields": {
+      "ca_2_foods__mae_period": 5.464,
+      "ca_2_foods__bias_period": -0.464,
+      "ca_2_foods__n_actual_period": 28,
+      "ca_2_foods__n_expected_period": 28,
+      "ca_2_foods__model_period": "seasonal_naive_v1",
+      "ca_2_foods__mae_window": 6.5,
+      "ca_2_foods__bias_window": -3.0,
+      "ca_2_foods__n_actual_window": 28,
+      "ca_2_foods__n_expected_window": 28,
+      "ca_2_foods__model_window": "seasonal_naive_v1",
+      "ca_2_foods__mae_delta": -1.036,
+      "ca_2_foods__bias_delta": 2.536
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "c4d0d07264369dc097b7523395429a5cb8c4c8917faabb8ca27269830bfad71c"
+    }
+   },
+   {
+    "turn": 6,
+    "summary": "Evidence shows a fair comparison, a real MAE increase with strong negative bias for the model under review, and a benchmark that did not degrade, so investigation is warranted.",
+    "observation_refs": [
+     "ctx1",
+     "cmp2"
+    ],
+    "call": null,
+    "result": null
+   }
+  ],
+  "cost": {
+   "turns": 6,
+   "calls": 5,
+   "usd": 0.002233,
+   "seconds": 23.3
+  }
+ }
+}

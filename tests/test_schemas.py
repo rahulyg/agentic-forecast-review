@@ -103,6 +103,13 @@ def test_unresolvable_pointer_token_is_rejected() -> None:
         _case_a_packet(claims=(bad,))
 
 
+def test_tokens_in_not_established_must_resolve_too() -> None:
+    with pytest.raises(ValidationError, match="does not resolve"):
+        _case_a_packet(not_established=("{ev:dq3.unknown_field} days",))
+    packet = _case_a_packet(not_established=("why {ev:dq3.missing_dates} are missing",))
+    assert packet.render_not_established() == ["why 4 are missing"]
+
+
 def test_observation_refs_cannot_point_forward() -> None:
     packet = _case_a_packet()
     steps = list(packet.trace)

@@ -171,6 +171,9 @@ def compare_runs(
             fields[f"{prefix}__model_{label}"] = ",".join(
                 sorted({row.model_version for row in forecasts})
             )
+            fields[f"{prefix}__horizons_{label}"] = _spans(
+                row.horizon for row in forecasts
+            )
         fields[f"{prefix}__mae_delta"] = round(
             found["period"][0] - found["window"][0], 3
         )

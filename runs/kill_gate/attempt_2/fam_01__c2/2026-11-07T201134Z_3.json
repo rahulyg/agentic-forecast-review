@@ -1,0 +1,334 @@
+{
+ "case_id": "fam_01__c2",
+ "snapshot_id": "snap_7d40a78799d8",
+ "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+ "temperature": 0.0,
+ "prompt_sha256": "420716c8a42509c9154b05866c893281d910dd59ec8df642dc277c592b288310",
+ "started_at": "2026-11-07T20:11:34+00:00",
+ "tokens": {
+  "prompt": 17744,
+  "completion": 3397
+ },
+ "error": null,
+ "notes": [
+  "finish refused: stray digits {'claims[0]': ['169-196', '24', '28', '141-168', '28', '28'], 'claims[1]': ['d0175', 'd0176', 'd0182', 'd0189'], 'claims[2]': ['1-28']}"
+ ],
+ "requests": [
+  {
+   "request": {
+    "tool": "resolve_context"
+   },
+   "reason": "Establish the snapshot context before comparing runs.",
+   "based_on": []
+  },
+  {
+   "request": {
+    "tool": "check_quality",
+    "series": [
+     "CA_2_FOODS"
+    ],
+    "days": {
+     "start_day": 141,
+     "end_day": 196
+    }
+   },
+   "reason": "Check data completeness and horizon consistency for CA_2_FOODS across both periods.",
+   "based_on": [
+    "ctx1"
+   ]
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "CA_2_FOODS"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    }
+   },
+   "reason": "Compare MAE in the review period against the earlier window for CA_2_FOODS.",
+   "based_on": [
+    "dq2"
+   ]
+  }
+ ],
+ "packet": {
+  "case_id": "fam_01__c2",
+  "runner": "agent",
+  "snapshot_id": "snap_7d40a78799d8",
+  "terminal_state": "STOP_UNTRUSTWORTHY",
+  "claims": [
+   {
+    "label": "FINDING",
+    "template": "CA_2_FOODS MAE in the review period is computed on {ev:cmp3.ca_2_foods__n_actual_period} actual rows out of {ev:cmp3.ca_2_foods__n_expected_period} expected, while the earlier window uses {ev:cmp3.ca_2_foods__n_actual_window} of {ev:cmp3.ca_2_foods__n_expected_window}; both sides carry model version synthetic_v3.",
+    "row_refs": [
+     "cmp3"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "Four actual days within the review period are missing; there are no duplicate rows and forecasts carry a single model version label.",
+    "row_refs": [
+     "act__CA_2_FOODS__d0175",
+     "act__CA_2_FOODS__d0176",
+     "act__CA_2_FOODS__d0182",
+     "act__CA_2_FOODS__d0189"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "Both periods share the same model version (synthetic_v3) and the same forecast horizon range {ev:dq2.ca_2_foods__horizon_range}, so the difference is not due to version or horizon mismatch.",
+    "row_refs": [
+     "cmp3",
+     "dq2"
+    ]
+   },
+   {
+    "label": "INFERENCE",
+    "template": "The reported review-period MAE is based on incomplete actuals, so the apparent MAE increase versus the earlier window cannot be taken as evidence the forecast model degraded.",
+    "row_refs": [
+     "cmp3",
+     "dq2"
+    ]
+   }
+  ],
+  "clarification": null,
+  "not_established": [
+   "Why the four actuals are missing, whether the missing days would raise or lower MAE if present, and whether the model genuinely needs investigation."
+  ],
+  "trace": [
+   {
+    "turn": 1,
+    "summary": "Establish the snapshot context before comparing runs.",
+    "observation_refs": [],
+    "call": {
+     "call_id": "ctx1",
+     "args": {
+      "tool": "resolve_context"
+     }
+    },
+    "result": {
+     "call_id": "ctx1",
+     "ok": true,
+     "fields": {
+      "snapshot_id": "snap_7d40a78799d8",
+      "first_day": 1,
+      "last_day": 196,
+      "review_day": 196,
+      "n_series": 30,
+      "model_versions": "seasonal_naive_v1,synthetic_v3",
+      "benchmark_model": "seasonal_naive_v1",
+      "issue_days": "112,140,168",
+      "metrics": "mae,signed_bias"
+     },
+     "row_ids": [],
+     "table": [
+      {
+       "series_id": "CA_1_FOODS"
+      },
+      {
+       "series_id": "CA_1_HOBBIES"
+      },
+      {
+       "series_id": "CA_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_2_FOODS"
+      },
+      {
+       "series_id": "CA_2_HOBBIES"
+      },
+      {
+       "series_id": "CA_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_3_FOODS"
+      },
+      {
+       "series_id": "CA_3_HOBBIES"
+      },
+      {
+       "series_id": "CA_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_4_FOODS"
+      },
+      {
+       "series_id": "CA_4_HOBBIES"
+      },
+      {
+       "series_id": "CA_4_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_1_FOODS"
+      },
+      {
+       "series_id": "TX_1_HOBBIES"
+      },
+      {
+       "series_id": "TX_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_2_FOODS"
+      },
+      {
+       "series_id": "TX_2_HOBBIES"
+      },
+      {
+       "series_id": "TX_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_3_FOODS"
+      },
+      {
+       "series_id": "TX_3_HOBBIES"
+      },
+      {
+       "series_id": "TX_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_1_FOODS"
+      },
+      {
+       "series_id": "WI_1_HOBBIES"
+      },
+      {
+       "series_id": "WI_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_2_FOODS"
+      },
+      {
+       "series_id": "WI_2_HOBBIES"
+      },
+      {
+       "series_id": "WI_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_3_FOODS"
+      },
+      {
+       "series_id": "WI_3_HOBBIES"
+      },
+      {
+       "series_id": "WI_3_HOUSEHOLD"
+      }
+     ],
+     "error": null,
+     "result_hash": "f03e79f74dbeb9f9fc78bcfd23d90a8636a6810094bec0911c6d2c52cb099d2c"
+    }
+   },
+   {
+    "turn": 2,
+    "summary": "Check data completeness and horizon consistency for CA_2_FOODS across both periods.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "dq2",
+     "args": {
+      "tool": "check_quality",
+      "series": [
+       "CA_2_FOODS"
+      ],
+      "days": {
+       "start_day": 141,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "dq2",
+     "ok": true,
+     "fields": {
+      "ca_2_foods__missing_days": 4,
+      "ca_2_foods__duplicate_rows": 0,
+      "ca_2_foods__coverage": 0.929,
+      "ca_2_foods__version_count": 1,
+      "ca_2_foods__horizon_range": "1-28"
+     },
+     "row_ids": [
+      "act__CA_2_FOODS__d0175",
+      "act__CA_2_FOODS__d0176",
+      "act__CA_2_FOODS__d0182",
+      "act__CA_2_FOODS__d0189"
+     ],
+     "table": [],
+     "error": null,
+     "result_hash": "694183a70c12a39518d1fa84693112897d208868272da6bf95917cb51c2621b0"
+    }
+   },
+   {
+    "turn": 3,
+    "summary": "Compare MAE in the review period against the earlier window for CA_2_FOODS.",
+    "observation_refs": [
+     "dq2"
+    ],
+    "call": {
+     "call_id": "cmp3",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "CA_2_FOODS"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": null
+     }
+    },
+    "result": {
+     "call_id": "cmp3",
+     "ok": true,
+     "fields": {
+      "ca_2_foods__mae_period": 6.542,
+      "ca_2_foods__bias_period": 1.375,
+      "ca_2_foods__n_actual_period": 24,
+      "ca_2_foods__n_expected_period": 28,
+      "ca_2_foods__model_period": "synthetic_v3",
+      "ca_2_foods__mae_window": 6.071,
+      "ca_2_foods__bias_window": -1.214,
+      "ca_2_foods__n_actual_window": 28,
+      "ca_2_foods__n_expected_window": 28,
+      "ca_2_foods__model_window": "synthetic_v3",
+      "ca_2_foods__mae_delta": 0.47,
+      "ca_2_foods__bias_delta": 2.589
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "a1a2fac91a50e5d408d28a562bf1a392072664fad43bcae5efc81758375c0b38"
+    }
+   },
+   {
+    "turn": 4,
+    "summary": "The review-period MAE is based on incomplete actuals, so the comparison is not valid as computed.",
+    "observation_refs": [
+     "dq2",
+     "cmp3"
+    ],
+    "call": null,
+    "result": null
+   }
+  ],
+  "cost": {
+   "turns": 4,
+   "calls": 3,
+   "usd": 0.001789,
+   "seconds": 21.0
+  }
+ }
+}

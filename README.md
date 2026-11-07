@@ -2,7 +2,7 @@
 
 Code owns the numbers; the model owns bounded choices. An evidence-linked agent loop and offline evaluation suite for time-series review.
 
-**Status: in progress, weekend 2 of 7.** Built and tested so far: the contracts, the metrics, the evidence rows and the synthetic data generator. The tools, agent loop, baseline and evaluation are not built yet, and no results exist. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
+**Status: in progress, weekend 3 of 7.** Built and tested: the contracts, the synthetic data and nine test cases, the gateway, five read-only tools, the stray-digit validator, and the agent loop (Google ADK, model via OpenRouter) with saved, replayable runs. The weekend-3 kill gate **failed** by the plan's criterion; the result and the open decision are in [decision 0003](docs/decisions/0003-kill-gate-result.md). The baseline and the evaluation are not built yet. The full plan is in [docs/ground-zero.md](docs/ground-zero.md) ([printable PDF](docs/ground-zero.pdf)).
 
 ![System at a glance](docs/figures/02-system-at-a-glance.svg)
 
@@ -22,7 +22,7 @@ A fair result may favour the script. That is a valid outcome and will be publish
 
 ## Results
 
-No evaluation has been run. Results arrive in weekend 6 of the [schedule](docs/ground-zero.md#10-schedule-gates-and-limits).
+No evaluation has been run; results arrive in weekend 6 of the [schedule](docs/ground-zero.md#10-schedule-gates-and-limits). The first measured result is the weekend-3 kill gate: in three attempts the agent never branched right after the first differing observation, but on the last attempt it ended correctly in 3 of 3 runs, branching one confirming check later ([0003](docs/decisions/0003-kill-gate-result.md)).
 
 ## Design decisions
 
@@ -47,9 +47,12 @@ nbs/                            the source: explanation + code + worked examples
   07_tools.ipynb                  the five read-only tools, checked against a hand-worked example
   08_gateway.ipynb                the single door for tool requests: checks, cutoff, fingerprints
   09_validator.ipynb              rejects any number the model types instead of citing a tool
+  10_agent.ipynb                  the ADK agent loop, run records and offline replay
+  11_kill_gate.ipynb              the weekend-3 test on the matched pair, checked by code
   90_explore_fixture_data.ipynb   a guided, charted look at the data
 src/agentic_forecast_review/    generated from nbs/
 cases/dev/                      test cases, answer key, run settings (snapshots rebuilt, not stored)
+runs/kill_gate/                 saved agent runs of the kill-gate attempts (replayable)
 tests/                          edge cases and rejection rules
 docs/                           the plan, decision records, figures, sealing, parking lot
 ```

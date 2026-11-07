@@ -16,8 +16,16 @@ def openrouter_api_key() -> str:
     key = os.environ.get(ENV_VAR, "").strip()
     if key and key != PLACEHOLDER_KEY:
         return key
-    env_path = Path.cwd() / ".env"
-    if env_path.is_file():
+    folder = Path.cwd()
+    env_path = next(
+        (
+            path / ".env"
+            for path in (folder, *folder.parents)
+            if (path / ".env").is_file()
+        ),
+        None,
+    )
+    if env_path is not None:
         for line in env_path.read_text(encoding="utf-8").splitlines():
             name, separator, value = line.strip().partition("=")
             if name == ENV_VAR and separator:
