@@ -497,5 +497,19 @@ d = {
                 "agentic_forecast_review/tools.py",
             ),
         },
+        "agentic_forecast_review.validator": {
+            "agentic_forecast_review.validator.known_identifiers": (
+                "validator.html#known_identifiers",
+                "agentic_forecast_review/validator.py",
+            ),
+            "agentic_forecast_review.validator.packet_stray_digits": (
+                "validator.html#packet_stray_digits",
+                "agentic_forecast_review/validator.py",
+            ),
+            "agentic_forecast_review.validator.stray_digits": (
+                "validator.html#stray_digits",
+                "agentic_forecast_review/validator.py",
+            ),
+        },
     },
 }

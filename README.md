@@ -46,6 +46,7 @@ nbs/                            the source: explanation + code + worked examples
   06b_cases.ipynb                 nine test cases with planted conditions, and the answer key
   07_tools.ipynb                  the five read-only tools, checked against a hand-worked example
   08_gateway.ipynb                the single door for tool requests: checks, cutoff, fingerprints
+  09_validator.ipynb              rejects any number the model types instead of citing a tool
   90_explore_fixture_data.ipynb   a guided, charted look at the data
 src/agentic_forecast_review/    generated from nbs/
 cases/dev/                      test cases, answer key, run settings (snapshots rebuilt, not stored)
