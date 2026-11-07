@@ -1,0 +1,965 @@
+{
+ "case_id": "fam_02__c1",
+ "snapshot_id": "snap_b1e9bf92ab22",
+ "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+ "temperature": 0.0,
+ "prompt_sha256": "34754b8c64230a9c8b217276bbd17596213e8c970bd379eca37290290f682886",
+ "started_at": "2026-11-07T21:20:29+00:00",
+ "tokens": {
+  "prompt": 51545,
+  "completion": 9037
+ },
+ "error": null,
+ "notes": [
+  "finish refused: 1 validation error for Claim\n  Value error, a FINDING must cite at least one source row [type=value_error, input_value={'label': <ClaimLabel.FIN...elta}.', 'row_refs': ()}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error",
+  "finish refused: stray digits {'claims[0]': ['141-168', '169-196'], 'claims[1]': ['1-28', '1-28'], 'claims[3]': ['181', '52', '195', '53']}",
+  "finish refused: stray digits {'claims[3]': ['181', '195']}"
+ ],
+ "requests": [
+  {
+   "request": {
+    "tool": "resolve_context"
+   },
+   "reason": "Establish the series, days, model versions and metrics available in this snapshot.",
+   "based_on": []
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "TX_1_HOUSEHOLD"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    }
+   },
+   "reason": "Compare MAE in the review period against the prior four-week window for TX_1_HOUSEHOLD.",
+   "based_on": [
+    "ctx1"
+   ]
+  },
+  {
+   "request": {
+    "tool": "check_quality",
+    "series": [
+     "TX_1_HOUSEHOLD"
+    ],
+    "days": {
+     "start_day": 141,
+     "end_day": 196
+    }
+   },
+   "reason": "Check completeness, duplicates, version labels and horizons for a fair comparison.",
+   "based_on": [
+    "ctx1"
+   ]
+  },
+  {
+   "request": {
+    "tool": "inspect_series",
+    "series_id": "TX_1_HOUSEHOLD",
+    "days": {
+     "start_day": 141,
+     "end_day": 196
+    }
+   },
+   "reason": "Inspect day-by-day actuals and forecasts to see where the larger errors occur.",
+   "based_on": [
+    "cmp2"
+   ]
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "TX_1_HOUSEHOLD"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    },
+    "model_version": "seasonal_naive_v1"
+   },
+   "reason": "Check whether the benchmark also degrades in the review period, to separate series difficulty from model-specific failure.",
+   "based_on": [
+    "cmp2"
+   ]
+  }
+ ],
+ "packet": {
+  "case_id": "fam_02__c1",
+  "runner": "agent",
+  "snapshot_id": "snap_b1e9bf92ab22",
+  "terminal_state": "ANSWER",
+  "claims": [
+   {
+    "label": "FINDING",
+    "template": "For TX_1_HOUSEHOLD under synthetic_v3, MAE rose from {ev:cmp2.tx_1_household__mae_window} in the prior four-week window to {ev:cmp2.tx_1_household__mae_period} in the review period, a delta of {ev:cmp2.tx_1_household__mae_delta}.",
+    "row_refs": [
+     "act__TX_1_HOUSEHOLD__d0141",
+     "act__TX_1_HOUSEHOLD__d0142",
+     "act__TX_1_HOUSEHOLD__d0143",
+     "act__TX_1_HOUSEHOLD__d0144",
+     "act__TX_1_HOUSEHOLD__d0145",
+     "act__TX_1_HOUSEHOLD__d0146",
+     "act__TX_1_HOUSEHOLD__d0147",
+     "act__TX_1_HOUSEHOLD__d0148",
+     "act__TX_1_HOUSEHOLD__d0149",
+     "act__TX_1_HOUSEHOLD__d0150",
+     "act__TX_1_HOUSEHOLD__d0151",
+     "act__TX_1_HOUSEHOLD__d0152",
+     "act__TX_1_HOUSEHOLD__d0153",
+     "act__TX_1_HOUSEHOLD__d0154",
+     "act__TX_1_HOUSEHOLD__d0155",
+     "act__TX_1_HOUSEHOLD__d0156",
+     "act__TX_1_HOUSEHOLD__d0157",
+     "act__TX_1_HOUSEHOLD__d0158",
+     "act__TX_1_HOUSEHOLD__d0159",
+     "act__TX_1_HOUSEHOLD__d0160",
+     "act__TX_1_HOUSEHOLD__d0161",
+     "act__TX_1_HOUSEHOLD__d0162",
+     "act__TX_1_HOUSEHOLD__d0163",
+     "act__TX_1_HOUSEHOLD__d0164",
+     "act__TX_1_HOUSEHOLD__d0165",
+     "act__TX_1_HOUSEHOLD__d0166",
+     "act__TX_1_HOUSEHOLD__d0167",
+     "act__TX_1_HOUSEHOLD__d0168",
+     "act__TX_1_HOUSEHOLD__d0169",
+     "act__TX_1_HOUSEHOLD__d0170",
+     "act__TX_1_HOUSEHOLD__d0171",
+     "act__TX_1_HOUSEHOLD__d0172",
+     "act__TX_1_HOUSEHOLD__d0173",
+     "act__TX_1_HOUSEHOLD__d0174",
+     "act__TX_1_HOUSEHOLD__d0175",
+     "act__TX_1_HOUSEHOLD__d0176",
+     "act__TX_1_HOUSEHOLD__d0177",
+     "act__TX_1_HOUSEHOLD__d0178",
+     "act__TX_1_HOUSEHOLD__d0179",
+     "act__TX_1_HOUSEHOLD__d0180",
+     "act__TX_1_HOUSEHOLD__d0181",
+     "act__TX_1_HOUSEHOLD__d0182",
+     "act__TX_1_HOUSEHOLD__d0183",
+     "act__TX_1_HOUSEHOLD__d0184",
+     "act__TX_1_HOUSEHOLD__d0185",
+     "act__TX_1_HOUSEHOLD__d0186",
+     "act__TX_1_HOUSEHOLD__d0187",
+     "act__TX_1_HOUSEHOLD__d0188",
+     "act__TX_1_HOUSEHOLD__d0189",
+     "act__TX_1_HOUSEHOLD__d0190",
+     "act__TX_1_HOUSEHOLD__d0191",
+     "act__TX_1_HOUSEHOLD__d0192",
+     "act__TX_1_HOUSEHOLD__d0193",
+     "act__TX_1_HOUSEHOLD__d0194",
+     "act__TX_1_HOUSEHOLD__d0195",
+     "act__TX_1_HOUSEHOLD__d0196"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "The comparison is fair: both periods have {ev:cmp2.tx_1_household__n_actual_period} actual rows against {ev:cmp2.tx_1_household__n_expected_period} expected, the same model version synthetic_v3 and the same horizons on both sides; check_quality shows no missing days, no duplicate rows, full coverage and a single version label.",
+    "row_refs": [
+     "act__TX_1_HOUSEHOLD__d0141",
+     "act__TX_1_HOUSEHOLD__d0168",
+     "act__TX_1_HOUSEHOLD__d0169",
+     "act__TX_1_HOUSEHOLD__d0196"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "The benchmark seasonal_naive_v1 degrades by a similar amount: its MAE rises from {ev:cmp5.tx_1_household__mae_window} to {ev:cmp5.tx_1_household__mae_period}, a delta of {ev:cmp5.tx_1_household__mae_delta}.",
+    "row_refs": [
+     "act__TX_1_HOUSEHOLD__d0141",
+     "act__TX_1_HOUSEHOLD__d0168",
+     "act__TX_1_HOUSEHOLD__d0169",
+     "act__TX_1_HOUSEHOLD__d0196"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "Day-by-day, the review period contains larger actuals near its end (the two cited rows) with errors in both directions; signed bias fell from {ev:cmp2.tx_1_household__bias_window} to {ev:cmp2.tx_1_household__bias_period} while MAE rose.",
+    "row_refs": [
+     "act__TX_1_HOUSEHOLD__d0181",
+     "act__TX_1_HOUSEHOLD__d0195"
+    ]
+   },
+   {
+    "label": "INFERENCE",
+    "template": "Because the benchmark shows the same magnitude of MAE degradation over the same days, the worsening reflects increased difficulty or volatility of the series in the review period, not a defect specific to the model under review; the model does not need investigating on this evidence.",
+    "row_refs": []
+   }
+  ],
+  "clarification": null,
+  "not_established": [
+   "The cause of the increased series volatility (no tool measures external drivers).",
+   "Whether the model is systematically worse than the benchmark, which is a separate question from the worsening trend."
+  ],
+  "trace": [
+   {
+    "turn": 1,
+    "summary": "Establish the series, days, model versions and metrics available in this snapshot.",
+    "observation_refs": [],
+    "call": {
+     "call_id": "ctx1",
+     "args": {
+      "tool": "resolve_context"
+     }
+    },
+    "result": {
+     "call_id": "ctx1",
+     "ok": true,
+     "fields": {
+      "snapshot_id": "snap_b1e9bf92ab22",
+      "first_day": 1,
+      "last_day": 196,
+      "review_day": 196,
+      "n_series": 30,
+      "model_versions": "seasonal_naive_v1,synthetic_v3",
+      "benchmark_model": "seasonal_naive_v1",
+      "issue_days": "112,140,168",
+      "metrics": "mae,signed_bias"
+     },
+     "row_ids": [],
+     "table": [
+      {
+       "series_id": "CA_1_FOODS"
+      },
+      {
+       "series_id": "CA_1_HOBBIES"
+      },
+      {
+       "series_id": "CA_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_2_FOODS"
+      },
+      {
+       "series_id": "CA_2_HOBBIES"
+      },
+      {
+       "series_id": "CA_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_3_FOODS"
+      },
+      {
+       "series_id": "CA_3_HOBBIES"
+      },
+      {
+       "series_id": "CA_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_4_FOODS"
+      },
+      {
+       "series_id": "CA_4_HOBBIES"
+      },
+      {
+       "series_id": "CA_4_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_1_FOODS"
+      },
+      {
+       "series_id": "TX_1_HOBBIES"
+      },
+      {
+       "series_id": "TX_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_2_FOODS"
+      },
+      {
+       "series_id": "TX_2_HOBBIES"
+      },
+      {
+       "series_id": "TX_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_3_FOODS"
+      },
+      {
+       "series_id": "TX_3_HOBBIES"
+      },
+      {
+       "series_id": "TX_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_1_FOODS"
+      },
+      {
+       "series_id": "WI_1_HOBBIES"
+      },
+      {
+       "series_id": "WI_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_2_FOODS"
+      },
+      {
+       "series_id": "WI_2_HOBBIES"
+      },
+      {
+       "series_id": "WI_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_3_FOODS"
+      },
+      {
+       "series_id": "WI_3_HOBBIES"
+      },
+      {
+       "series_id": "WI_3_HOUSEHOLD"
+      }
+     ],
+     "error": null,
+     "result_hash": "d376cbaa7a0e9ce8786cd149087b84b31836f981b22aae06e37b533db37d5df8"
+    }
+   },
+   {
+    "turn": 2,
+    "summary": "Compare MAE in the review period against the prior four-week window for TX_1_HOUSEHOLD.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "cmp2",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "TX_1_HOUSEHOLD"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": null
+     }
+    },
+    "result": {
+     "call_id": "cmp2",
+     "ok": true,
+     "fields": {
+      "tx_1_household__mae_period": 3.643,
+      "tx_1_household__bias_period": 0.214,
+      "tx_1_household__n_actual_period": 28,
+      "tx_1_household__n_expected_period": 28,
+      "tx_1_household__model_period": "synthetic_v3",
+      "tx_1_household__horizons_period": "1-28",
+      "tx_1_household__mae_window": 2.643,
+      "tx_1_household__bias_window": 1.357,
+      "tx_1_household__n_actual_window": 28,
+      "tx_1_household__n_expected_window": 28,
+      "tx_1_household__model_window": "synthetic_v3",
+      "tx_1_household__horizons_window": "1-28",
+      "tx_1_household__mae_delta": 1.0,
+      "tx_1_household__bias_delta": -1.143
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "627a2deab9111e34ff1a173b3617f1ab446c986219a874dfceaf1bc423f5b37e"
+    }
+   },
+   {
+    "turn": 3,
+    "summary": "Check completeness, duplicates, version labels and horizons for a fair comparison.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "dq3",
+     "args": {
+      "tool": "check_quality",
+      "series": [
+       "TX_1_HOUSEHOLD"
+      ],
+      "days": {
+       "start_day": 141,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "dq3",
+     "ok": true,
+     "fields": {
+      "tx_1_household__missing_days": 0,
+      "tx_1_household__duplicate_rows": 0,
+      "tx_1_household__coverage": 1.0,
+      "tx_1_household__version_count": 1,
+      "tx_1_household__horizon_range": "1-28"
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "e29d431c88fbf14677bd3c82fb133e1311e7beada575220282b25696aad50ddd"
+    }
+   },
+   {
+    "turn": 4,
+    "summary": "Inspect day-by-day actuals and forecasts to see where the larger errors occur.",
+    "observation_refs": [
+     "cmp2"
+    ],
+    "call": {
+     "call_id": "ins4",
+     "args": {
+      "tool": "inspect_series",
+      "series_id": "TX_1_HOUSEHOLD",
+      "days": {
+       "start_day": 141,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "ins4",
+     "ok": true,
+     "fields": {
+      "n_days": 56,
+      "mean_actual": 37.018,
+      "mean_forecast": 37.804,
+      "bias_last_7": 1.429,
+      "bias_last_14": 0.714
+     },
+     "row_ids": [
+      "act__TX_1_HOUSEHOLD__d0141",
+      "act__TX_1_HOUSEHOLD__d0142",
+      "act__TX_1_HOUSEHOLD__d0143",
+      "act__TX_1_HOUSEHOLD__d0144",
+      "act__TX_1_HOUSEHOLD__d0145",
+      "act__TX_1_HOUSEHOLD__d0146",
+      "act__TX_1_HOUSEHOLD__d0147",
+      "act__TX_1_HOUSEHOLD__d0148",
+      "act__TX_1_HOUSEHOLD__d0149",
+      "act__TX_1_HOUSEHOLD__d0150",
+      "act__TX_1_HOUSEHOLD__d0151",
+      "act__TX_1_HOUSEHOLD__d0152",
+      "act__TX_1_HOUSEHOLD__d0153",
+      "act__TX_1_HOUSEHOLD__d0154",
+      "act__TX_1_HOUSEHOLD__d0155",
+      "act__TX_1_HOUSEHOLD__d0156",
+      "act__TX_1_HOUSEHOLD__d0157",
+      "act__TX_1_HOUSEHOLD__d0158",
+      "act__TX_1_HOUSEHOLD__d0159",
+      "act__TX_1_HOUSEHOLD__d0160",
+      "act__TX_1_HOUSEHOLD__d0161",
+      "act__TX_1_HOUSEHOLD__d0162",
+      "act__TX_1_HOUSEHOLD__d0163",
+      "act__TX_1_HOUSEHOLD__d0164",
+      "act__TX_1_HOUSEHOLD__d0165",
+      "act__TX_1_HOUSEHOLD__d0166",
+      "act__TX_1_HOUSEHOLD__d0167",
+      "act__TX_1_HOUSEHOLD__d0168",
+      "act__TX_1_HOUSEHOLD__d0169",
+      "act__TX_1_HOUSEHOLD__d0170",
+      "act__TX_1_HOUSEHOLD__d0171",
+      "act__TX_1_HOUSEHOLD__d0172",
+      "act__TX_1_HOUSEHOLD__d0173",
+      "act__TX_1_HOUSEHOLD__d0174",
+      "act__TX_1_HOUSEHOLD__d0175",
+      "act__TX_1_HOUSEHOLD__d0176",
+      "act__TX_1_HOUSEHOLD__d0177",
+      "act__TX_1_HOUSEHOLD__d0178",
+      "act__TX_1_HOUSEHOLD__d0179",
+      "act__TX_1_HOUSEHOLD__d0180",
+      "act__TX_1_HOUSEHOLD__d0181",
+      "act__TX_1_HOUSEHOLD__d0182",
+      "act__TX_1_HOUSEHOLD__d0183",
+      "act__TX_1_HOUSEHOLD__d0184",
+      "act__TX_1_HOUSEHOLD__d0185",
+      "act__TX_1_HOUSEHOLD__d0186",
+      "act__TX_1_HOUSEHOLD__d0187",
+      "act__TX_1_HOUSEHOLD__d0188",
+      "act__TX_1_HOUSEHOLD__d0189",
+      "act__TX_1_HOUSEHOLD__d0190",
+      "act__TX_1_HOUSEHOLD__d0191",
+      "act__TX_1_HOUSEHOLD__d0192",
+      "act__TX_1_HOUSEHOLD__d0193",
+      "act__TX_1_HOUSEHOLD__d0194",
+      "act__TX_1_HOUSEHOLD__d0195",
+      "act__TX_1_HOUSEHOLD__d0196"
+     ],
+     "table": [
+      {
+       "day": 141,
+       "actual": 32,
+       "forecast": 31,
+       "horizon": 1,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 142,
+       "actual": 29,
+       "forecast": 34,
+       "horizon": 2,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 143,
+       "actual": 30,
+       "forecast": 30,
+       "horizon": 3,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 144,
+       "actual": 37,
+       "forecast": 34,
+       "horizon": 4,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 145,
+       "actual": 38,
+       "forecast": 39,
+       "horizon": 5,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 146,
+       "actual": 44,
+       "forecast": 46,
+       "horizon": 6,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 147,
+       "actual": 42,
+       "forecast": 44,
+       "horizon": 7,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 148,
+       "actual": 33,
+       "forecast": 34,
+       "horizon": 8,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 149,
+       "actual": 29,
+       "forecast": 34,
+       "horizon": 9,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 150,
+       "actual": 30,
+       "forecast": 31,
+       "horizon": 10,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 151,
+       "actual": 32,
+       "forecast": 33,
+       "horizon": 11,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 152,
+       "actual": 40,
+       "forecast": 38,
+       "horizon": 12,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 153,
+       "actual": 45,
+       "forecast": 46,
+       "horizon": 13,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 154,
+       "actual": 46,
+       "forecast": 46,
+       "horizon": 14,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 155,
+       "actual": 35,
+       "forecast": 34,
+       "horizon": 15,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 156,
+       "actual": 32,
+       "forecast": 37,
+       "horizon": 16,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 157,
+       "actual": 30,
+       "forecast": 33,
+       "horizon": 17,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 158,
+       "actual": 32,
+       "forecast": 35,
+       "horizon": 18,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 159,
+       "actual": 43,
+       "forecast": 38,
+       "horizon": 19,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 160,
+       "actual": 50,
+       "forecast": 47,
+       "horizon": 20,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 161,
+       "actual": 41,
+       "forecast": 47,
+       "horizon": 21,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 162,
+       "actual": 34,
+       "forecast": 33,
+       "horizon": 22,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 163,
+       "actual": 30,
+       "forecast": 36,
+       "horizon": 23,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 164,
+       "actual": 37,
+       "forecast": 35,
+       "horizon": 24,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 165,
+       "actual": 34,
+       "forecast": 34,
+       "horizon": 25,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 166,
+       "actual": 36,
+       "forecast": 40,
+       "horizon": 26,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 167,
+       "actual": 44,
+       "forecast": 49,
+       "horizon": 27,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 168,
+       "actual": 41,
+       "forecast": 46,
+       "horizon": 28,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 169,
+       "actual": 31,
+       "forecast": 36,
+       "horizon": 1,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 170,
+       "actual": 32,
+       "forecast": 29,
+       "horizon": 2,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 171,
+       "actual": 29,
+       "forecast": 35,
+       "horizon": 3,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 172,
+       "actual": 36,
+       "forecast": 35,
+       "horizon": 4,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 173,
+       "actual": 36,
+       "forecast": 37,
+       "horizon": 5,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 174,
+       "actual": 47,
+       "forecast": 45,
+       "horizon": 6,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 175,
+       "actual": 41,
+       "forecast": 43,
+       "horizon": 7,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 176,
+       "actual": 33,
+       "forecast": 33,
+       "horizon": 8,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 177,
+       "actual": 33,
+       "forecast": 29,
+       "horizon": 9,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 178,
+       "actual": 31,
+       "forecast": 40,
+       "horizon": 10,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 179,
+       "actual": 36,
+       "forecast": 34,
+       "horizon": 11,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 180,
+       "actual": 40,
+       "forecast": 38,
+       "horizon": 12,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 181,
+       "actual": 52,
+       "forecast": 46,
+       "horizon": 13,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 182,
+       "actual": 46,
+       "forecast": 39,
+       "horizon": 14,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 183,
+       "actual": 32,
+       "forecast": 34,
+       "horizon": 15,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 184,
+       "actual": 31,
+       "forecast": 35,
+       "horizon": 16,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 185,
+       "actual": 34,
+       "forecast": 39,
+       "horizon": 17,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 186,
+       "actual": 39,
+       "forecast": 36,
+       "horizon": 18,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 187,
+       "actual": 42,
+       "forecast": 35,
+       "horizon": 19,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 188,
+       "actual": 44,
+       "forecast": 46,
+       "horizon": 20,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 189,
+       "actual": 44,
+       "forecast": 41,
+       "horizon": 21,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 190,
+       "actual": 30,
+       "forecast": 35,
+       "horizon": 22,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 191,
+       "actual": 30,
+       "forecast": 32,
+       "horizon": 23,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 192,
+       "actual": 33,
+       "forecast": 38,
+       "horizon": 24,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 193,
+       "actual": 29,
+       "forecast": 34,
+       "horizon": 25,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 194,
+       "actual": 38,
+       "forecast": 39,
+       "horizon": 26,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 195,
+       "actual": 53,
+       "forecast": 47,
+       "horizon": 27,
+       "model": "synthetic_v3"
+      },
+      {
+       "day": 196,
+       "actual": 45,
+       "forecast": 43,
+       "horizon": 28,
+       "model": "synthetic_v3"
+      }
+     ],
+     "error": null,
+     "result_hash": "a2f715e4793eebb43cca2cfd74dda1076b5b8a4d7564dc0cf2320d37ded46e1d"
+    }
+   },
+   {
+    "turn": 5,
+    "summary": "Check whether the benchmark also degrades in the review period, to separate series difficulty from model-specific failure.",
+    "observation_refs": [
+     "cmp2"
+    ],
+    "call": {
+     "call_id": "cmp5",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "TX_1_HOUSEHOLD"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": "seasonal_naive_v1"
+     }
+    },
+    "result": {
+     "call_id": "cmp5",
+     "ok": true,
+     "fields": {
+      "tx_1_household__mae_period": 3.393,
+      "tx_1_household__bias_period": -0.821,
+      "tx_1_household__n_actual_period": 28,
+      "tx_1_household__n_expected_period": 28,
+      "tx_1_household__model_period": "seasonal_naive_v1",
+      "tx_1_household__horizons_period": "1-28",
+      "tx_1_household__mae_window": 2.357,
+      "tx_1_household__bias_window": 0.214,
+      "tx_1_household__n_actual_window": 28,
+      "tx_1_household__n_expected_window": 28,
+      "tx_1_household__model_window": "seasonal_naive_v1",
+      "tx_1_household__horizons_window": "1-28",
+      "tx_1_household__mae_delta": 1.036,
+      "tx_1_household__bias_delta": -1.036
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "f34b1d3c76c0a4307a3dc196006f56b3eda63aa906ef26a7e47acf494b632d0e"
+    }
+   },
+   {
+    "turn": 6,
+    "summary": "The comparison is fair and MAE genuinely worsened, but the benchmark degrades equally, so the worsening is a series-level effect rather than a model-specific problem.",
+    "observation_refs": [
+     "cmp2",
+     "dq3"
+    ],
+    "call": null,
+    "result": null
+   }
+  ],
+  "cost": {
+   "turns": 6,
+   "calls": 5,
+   "usd": 0.004948,
+   "seconds": 64.9
+  }
+ }
+}

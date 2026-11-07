@@ -1,0 +1,314 @@
+{
+ "case_id": "fam_02__c5",
+ "snapshot_id": "snap_3c33742574cb",
+ "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+ "temperature": 0.0,
+ "prompt_sha256": "f1795c4a8f46a59767b3ff07c66c33820c59fa7cc433fb3876cf480b10c4a3f4",
+ "started_at": "2026-11-07T21:30:30+00:00",
+ "tokens": {
+  "prompt": 21268,
+  "completion": 3865
+ },
+ "error": null,
+ "notes": [
+  "finish refused: 1 validation error for Claim\n  Value error, a FINDING must cite at least one source row [type=value_error, input_value={'label': <ClaimLabel.FIN...s 1-7.', 'row_refs': ()}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error",
+  "finish refused: stray digits {'claims[0]': ['169-196', '22-28', '141-168', '1-7'], 'claims[1]': ['28', '28'], 'trace[3].summary': ['22-28', '1-7']}"
+ ],
+ "requests": [
+  {
+   "request": {
+    "tool": "resolve_context"
+   },
+   "reason": "Establish the snapshot context for the review.",
+   "based_on": []
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "TX_1_HOUSEHOLD"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    }
+   },
+   "reason": "Compare MAE for the review period against the earlier four-week window.",
+   "based_on": [
+    "ctx1"
+   ]
+  },
+  {
+   "request": {
+    "tool": "check_quality",
+    "series": [
+     "TX_1_HOUSEHOLD"
+    ],
+    "days": {
+     "start_day": 141,
+     "end_day": 196
+    }
+   },
+   "reason": "Check data quality and model version labels across both windows.",
+   "based_on": [
+    "ctx1"
+   ]
+  }
+ ],
+ "packet": {
+  "case_id": "fam_02__c5",
+  "runner": "agent",
+  "snapshot_id": "snap_3c33742574cb",
+  "terminal_state": "STOP_UNTRUSTWORTHY",
+  "claims": [
+   {
+    "label": "INFERENCE",
+    "template": "The review period forecasts carry horizons {ev:cmp2.tx_1_household__horizons_period} while the comparison window forecasts carry horizons {ev:cmp2.tx_1_household__horizons_window}, so the two sides were made at very different lead times.",
+    "row_refs": []
+   },
+   {
+    "label": "INFERENCE",
+    "template": "Both sides use the same model version (synthetic_v3) and cover the expected number of days with no missing or duplicate rows, so the horizon mismatch is the only fairness issue identified.",
+    "row_refs": []
+   },
+   {
+    "label": "INFERENCE",
+    "template": "Because MAE grows with forecast horizon, the MAE gap between the period ({ev:cmp2.tx_1_household__mae_period}) and the window ({ev:cmp2.tx_1_household__mae_window}) may reflect the longer horizons in the review period rather than model failure; the comparison as computed is not valid for judging the model.",
+    "row_refs": []
+   }
+  ],
+  "clarification": null,
+  "not_established": [
+   "Whether synthetic_v3 actually degraded for TX_1_HOUSEHOLD, since the two sides were produced at different horizons; no tool isolates horizon-driven error from model-driven error."
+  ],
+  "trace": [
+   {
+    "turn": 1,
+    "summary": "Establish the snapshot context for the review.",
+    "observation_refs": [],
+    "call": {
+     "call_id": "ctx1",
+     "args": {
+      "tool": "resolve_context"
+     }
+    },
+    "result": {
+     "call_id": "ctx1",
+     "ok": true,
+     "fields": {
+      "snapshot_id": "snap_3c33742574cb",
+      "first_day": 1,
+      "last_day": 196,
+      "review_day": 196,
+      "n_series": 30,
+      "model_versions": "seasonal_naive_v1,synthetic_v3",
+      "benchmark_model": "seasonal_naive_v1",
+      "issue_days": "112,140,147,154,161,168",
+      "metrics": "mae,signed_bias"
+     },
+     "row_ids": [],
+     "table": [
+      {
+       "series_id": "CA_1_FOODS"
+      },
+      {
+       "series_id": "CA_1_HOBBIES"
+      },
+      {
+       "series_id": "CA_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_2_FOODS"
+      },
+      {
+       "series_id": "CA_2_HOBBIES"
+      },
+      {
+       "series_id": "CA_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_3_FOODS"
+      },
+      {
+       "series_id": "CA_3_HOBBIES"
+      },
+      {
+       "series_id": "CA_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_4_FOODS"
+      },
+      {
+       "series_id": "CA_4_HOBBIES"
+      },
+      {
+       "series_id": "CA_4_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_1_FOODS"
+      },
+      {
+       "series_id": "TX_1_HOBBIES"
+      },
+      {
+       "series_id": "TX_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_2_FOODS"
+      },
+      {
+       "series_id": "TX_2_HOBBIES"
+      },
+      {
+       "series_id": "TX_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_3_FOODS"
+      },
+      {
+       "series_id": "TX_3_HOBBIES"
+      },
+      {
+       "series_id": "TX_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_1_FOODS"
+      },
+      {
+       "series_id": "WI_1_HOBBIES"
+      },
+      {
+       "series_id": "WI_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_2_FOODS"
+      },
+      {
+       "series_id": "WI_2_HOBBIES"
+      },
+      {
+       "series_id": "WI_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_3_FOODS"
+      },
+      {
+       "series_id": "WI_3_HOBBIES"
+      },
+      {
+       "series_id": "WI_3_HOUSEHOLD"
+      }
+     ],
+     "error": null,
+     "result_hash": "830a9f7b6ee0d251da6a1783c01a37cc303ba22ddda950fd3bb387a558e25f23"
+    }
+   },
+   {
+    "turn": 2,
+    "summary": "Compare MAE for the review period against the earlier four-week window.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "cmp2",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "TX_1_HOUSEHOLD"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": null
+     }
+    },
+    "result": {
+     "call_id": "cmp2",
+     "ok": true,
+     "fields": {
+      "tx_1_household__mae_period": 14.821,
+      "tx_1_household__bias_period": 6.321,
+      "tx_1_household__n_actual_period": 28,
+      "tx_1_household__n_expected_period": 28,
+      "tx_1_household__model_period": "synthetic_v3",
+      "tx_1_household__horizons_period": "22-28",
+      "tx_1_household__mae_window": 3.25,
+      "tx_1_household__bias_window": -0.321,
+      "tx_1_household__n_actual_window": 28,
+      "tx_1_household__n_expected_window": 28,
+      "tx_1_household__model_window": "synthetic_v3",
+      "tx_1_household__horizons_window": "1-7",
+      "tx_1_household__mae_delta": 11.571,
+      "tx_1_household__bias_delta": 6.643
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "13508be98a07ee69938e0dbb037c66d855b6faab38b63f005536f93ecd3fff4f"
+    }
+   },
+   {
+    "turn": 3,
+    "summary": "Check data quality and model version labels across both windows.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "dq3",
+     "args": {
+      "tool": "check_quality",
+      "series": [
+       "TX_1_HOUSEHOLD"
+      ],
+      "days": {
+       "start_day": 141,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "dq3",
+     "ok": true,
+     "fields": {
+      "tx_1_household__missing_days": 0,
+      "tx_1_household__duplicate_rows": 0,
+      "tx_1_household__coverage": 1.0,
+      "tx_1_household__version_count": 1,
+      "tx_1_household__horizon_range": "1-7,22-28"
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "a86697b67742cd967e404db8da0a1b9b11e3134964568b08b0dccf3619955176"
+    }
+   },
+   {
+    "turn": 4,
+    "summary": "The comparison is unfair as computed: the review period uses longer horizons than the window, so the model should not be judged on this comparison.",
+    "observation_refs": [
+     "cmp2",
+     "dq3"
+    ],
+    "call": null,
+    "result": null
+   }
+  ],
+  "cost": {
+   "turns": 4,
+   "calls": 3,
+   "usd": 0.002083,
+   "seconds": 30.0
+  }
+ }
+}

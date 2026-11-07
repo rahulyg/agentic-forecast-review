@@ -84,12 +84,15 @@ How to work:
 
 End by calling `finish` once, with one outcome:
 - ANSWER: the evidence answers the request.
-- CLARIFY: the request leaves the metric, period, window or series unspecified; list \
-what is missing. Never ask when the request is fully specified.
+- CLARIFY: the request does not name all four of the metric (MAE or signed bias), \
+the series, the review period and the comparison window; list what is missing. Do \
+not assume a default for anything the request leaves out, and never ask when all \
+four are named.
 - STOP_UNTRUSTWORTHY: the comparison the request relies on is not valid as computed; \
 say why.
 - INCOMPLETE: you could not establish an answer.
-Claims are FINDING (an observed fact, which must cite row IDs returned by the tools) or \
+Claims are FINDING (an observed fact, which must cite in rows the row IDs that tools \
+returned in row_ids, such as act__CA_2_FOODS__d0175, never call ids) or \
 INFERENCE (your interpretation). List under not_established what the tools cannot show, \
 such as a cause no tool measures. Never invent a cause.
 """
@@ -209,6 +212,22 @@ class AgentRun:
         except (ValueError, ValidationError) as exc:
             self.notes.append(f"finish refused: {exc}")
             return {"ok": False, "error": str(exc)[:800]}
+        returned = {
+            row
+            for step in self.steps
+            if step.result is not None
+            for row in step.result.row_ids
+        }
+        unknown = sorted(
+            {row for claim in packet.claims for row in claim.row_refs} - returned
+        )
+        if unknown:
+            self.notes.append(f"finish refused: rows not returned by tools {unknown}")
+            return {
+                "ok": False,
+                "error": f"rows must be row IDs that tools returned in row_ids, not {unknown}; "
+                "call inspect_series, check_quality or evidence_rows for row IDs",
+            }
         stray = packet_stray_digits(
             packet, known_identifiers(self.case, self.snapshot, packet)
         )

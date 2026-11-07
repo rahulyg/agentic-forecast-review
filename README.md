@@ -50,12 +50,14 @@ nbs/                            the source: explanation + code + worked examples
   10_agent.ipynb                  the ADK agent loop, run records and offline replay
   11_kill_gate.ipynb              the weekend-3 test on the matched pair, checked by code
   12_baseline.ipynb               the scripted report the agent is compared with (frozen)
+  13_grading.ipynb                code grading of packets for both runners; packets as text
   90_explore_fixture_data.ipynb   a guided, charted look at the data
 src/agentic_forecast_review/    generated from nbs/
 cases/dev/                      test cases, answer key, run settings (snapshots rebuilt, not stored)
 runs/kill_gate/                 saved agent runs of the kill-gate attempts (replayable)
 tests/                          edge cases and rejection rules
-docs/                           the plan, decision records, figures, sealing, parking lot
+docs/                           the plan, decision records, rubric, figures, sealing, parking lot
+grading/                        human grading sheets
 ```
 
 ## Verifying

@@ -7,3 +7,12 @@
 {"case_id":"fam_01__c7","family_id":"fam_01","planted":"tool_failure","expected_terminal":"ANSWER","expected_missing":[],"matched_case_id":null}
 {"case_id":"fam_01__c8","family_id":"fam_01","planted":"ambiguous_request","expected_terminal":"CLARIFY","expected_missing":["metric"],"matched_case_id":null}
 {"case_id":"fam_01__c9","family_id":"fam_01","planted":"unsupported_cause","expected_terminal":"ANSWER","expected_missing":[],"matched_case_id":null}
+{"case_id":"fam_02__c1","family_id":"fam_02","planted":"normal","expected_terminal":"ANSWER","expected_missing":[],"matched_case_id":null}
+{"case_id":"fam_02__c2","family_id":"fam_02","planted":"missing_dates","expected_terminal":"STOP_UNTRUSTWORTHY","expected_missing":[],"matched_case_id":"fam_02__c6"}
+{"case_id":"fam_02__c3","family_id":"fam_02","planted":"duplicate_records","expected_terminal":"STOP_UNTRUSTWORTHY","expected_missing":[],"matched_case_id":null}
+{"case_id":"fam_02__c4","family_id":"fam_02","planted":"version_mismatch","expected_terminal":"STOP_UNTRUSTWORTHY","expected_missing":[],"matched_case_id":null}
+{"case_id":"fam_02__c5","family_id":"fam_02","planted":"horizon_mismatch","expected_terminal":"STOP_UNTRUSTWORTHY","expected_missing":[],"matched_case_id":null}
+{"case_id":"fam_02__c6","family_id":"fam_02","planted":"bias_shift","expected_terminal":"ANSWER","expected_missing":[],"matched_case_id":"fam_02__c2"}
+{"case_id":"fam_02__c7","family_id":"fam_02","planted":"tool_failure","expected_terminal":"ANSWER","expected_missing":[],"matched_case_id":null}
+{"case_id":"fam_02__c8","family_id":"fam_02","planted":"ambiguous_request","expected_terminal":"CLARIFY","expected_missing":["metric"],"matched_case_id":null}
+{"case_id":"fam_02__c9","family_id":"fam_02","planted":"unsupported_cause","expected_terminal":"ANSWER","expected_missing":[],"matched_case_id":null}

@@ -1,0 +1,22 @@
+{
+  "case_id": "fam_02__c2",
+  "family_id": "fam_02",
+  "split": "dev",
+  "snapshot_id": "snap_4e98651ed7b3",
+  "review_day": 196,
+  "request_text": "TX_1 HOUSEHOLD forecast error (MAE) looks worse in the review period, days 169-196, than in the four weeks before, days 141-168. Does the forecast model need investigating?",
+  "canonical_scope": {
+    "metric": "mae",
+    "period": {
+      "start_day": 169,
+      "end_day": 196
+    },
+    "window": {
+      "start_day": 141,
+      "end_day": 168
+    },
+    "series": [
+      "TX_1_HOUSEHOLD"
+    ]
+  }
+}
