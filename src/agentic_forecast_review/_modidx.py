@@ -9,6 +9,56 @@ d = {
         "lib_path": "src/agentic_forecast_review",
     },
     "syms": {
+        "agentic_forecast_review.cases": {
+            "agentic_forecast_review.cases.CaseSpec": (
+                "cases.html#casespec",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.Family": (
+                "cases.html#family",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.build_family": (
+                "cases.html#build_family",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.case_id": (
+                "cases.html#case_id",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.drop_actuals": (
+                "cases.html#drop_actuals",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.duplicate_actuals": (
+                "cases.html#duplicate_actuals",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.plant": (
+                "cases.html#plant",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.relabel_model": (
+                "cases.html#relabel_model",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.reschedule": (
+                "cases.html#reschedule",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.scale_forecasts": (
+                "cases.html#scale_forecasts",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.write_family": (
+                "cases.html#write_family",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.write_manifest": (
+                "cases.html#write_manifest",
+                "agentic_forecast_review/cases.py",
+            ),
+        },
         "agentic_forecast_review.credentials": {
             "agentic_forecast_review.credentials.openrouter_api_key": (
                 "credentials.html#openrouter_api_key",
@@ -202,6 +252,10 @@ d = {
             ),
             "agentic_forecast_review.schemas.ManifestEntry._clarify_consistency": (
                 "schemas.html#manifestentry._clarify_consistency",
+                "agentic_forecast_review/schemas.py",
+            ),
+            "agentic_forecast_review.schemas.ManifestEntry._sorted_missing": (
+                "schemas.html#manifestentry._sorted_missing",
                 "agentic_forecast_review/schemas.py",
             ),
             "agentic_forecast_review.schemas.Metric": (

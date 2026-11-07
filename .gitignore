@@ -29,3 +29,6 @@ cases/heldout/*
 
 # Local spreadsheet export of the data, for browsing only
 agentic-forecast-review_data/
+
+# Snapshots are rebuilt from the generator; case files pin their snapshot_id
+cases/*/*/snapshots/

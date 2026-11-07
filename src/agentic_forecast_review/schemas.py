@@ -41,7 +41,14 @@ import re
 from enum import StrEnum
 from typing import Annotated, Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StringConstraints,
+    field_serializer,
+    model_validator,
+)
 
 # %% ../../nbs/03_schemas.ipynb #72eea5119410473aa328ad9291626812
 MAX_TURNS = 8
@@ -197,6 +204,11 @@ class ManifestEntry(_Frozen):
         if self.matched_case_id == self.case_id:
             raise ValueError("a case cannot be matched with itself")
         return self
+
+    @field_serializer("expected_missing")
+    def _sorted_missing(self, missing: frozenset[MissingScope]) -> list[str]:
+        """A stable order, so the manifest file is the same on every run."""
+        return sorted(missing)
 
 
 # %% ../../nbs/03_schemas.ipynb #504fb2a444614c0babb325280ed9130a
