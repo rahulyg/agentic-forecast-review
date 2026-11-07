@@ -1,0 +1,11 @@
+{
+  "seal_process_revision": "seal-v1",
+  "cipher_artifact": {
+    "path": "cases/heldout/seeds.jsonl.age",
+    "format": "age"
+  },
+  "cipher_sha256": "038397e2d51530a31e0d2ffa1cc29340ad03a9657c7a436d67da8d6a70450dc5",
+  "total_families": 10,
+  "baseline_commit": "7ac957014c662261ba9b315a516a8cc80bc33bae",
+  "sealed_at": "2026-11-07T20:48:58+00:00"
+}
