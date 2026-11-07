@@ -63,6 +63,36 @@ d = {
                 "agentic_forecast_review/agent.py",
             ),
         },
+        "agentic_forecast_review.baseline": {
+            "agentic_forecast_review.baseline.Script": (
+                "baseline.html#script",
+                "agentic_forecast_review/baseline.py",
+            ),
+            "agentic_forecast_review.baseline.Script.__init__": (
+                "baseline.html#script.__init__",
+                "agentic_forecast_review/baseline.py",
+            ),
+            "agentic_forecast_review.baseline.Script.call": (
+                "baseline.html#script.call",
+                "agentic_forecast_review/baseline.py",
+            ),
+            "agentic_forecast_review.baseline.Script.packet": (
+                "baseline.html#script.packet",
+                "agentic_forecast_review/baseline.py",
+            ),
+            "agentic_forecast_review.baseline._token": (
+                "baseline.html#_token",
+                "agentic_forecast_review/baseline.py",
+            ),
+            "agentic_forecast_review.baseline._unfair": (
+                "baseline.html#_unfair",
+                "agentic_forecast_review/baseline.py",
+            ),
+            "agentic_forecast_review.baseline.run_baseline": (
+                "baseline.html#run_baseline",
+                "agentic_forecast_review/baseline.py",
+            ),
+        },
         "agentic_forecast_review.cases": {
             "agentic_forecast_review.cases.CaseSpec": (
                 "cases.html#casespec",
