@@ -1,7 +1,7 @@
 packet,H1_investigated,H2_supported,H3_answers,H4_no_invented_cause,H5_clear,minutes
-P1,,,,,,
-P2,,,,,,
-P3,,,,,,
-P4,,,,,,
-P5,,,,,,
-P6,,,,,,
+P1,yes,no,yes,yes,yes,0.075933333
+P2,yes,yes,yes,yes,yes,0.048716667
+P3,yes,no,yes,yes,yes,0.081300000
+P4,yes,no,no,yes,no,0.182533333
+P5,yes,yes,yes,yes,yes,0.124516667
+P6,yes,no,no,yes,yes,0.085366667

@@ -4,6 +4,10 @@ Every packet is graded twice: by code (`nbs/13_grading`) and by a person, with t
 rubric. The person sees the packet as text (`packet_text`) and the case's answer key,
 but **not which runner made it**; packets are shuffled. The model never grades itself.
 
+For the W5 development pilot, a Codex agent applied this rubric in place of a
+person. [Decision 0004](decisions/0004-timed-grading-pilot.md) records the pilot
+exception, timing and limits of the packet evidence and blinding.
+
 ## What code already checks
 
 The ending matches the answer key; a CLARIFY names exactly the missing scope parts;
