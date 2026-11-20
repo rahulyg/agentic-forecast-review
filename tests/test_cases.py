@@ -7,11 +7,13 @@ from pathlib import Path
 import pytest
 
 from agentic_forecast_review.cases import (
+    DEV_FAMILIES,
     DUPLICATE_DAYS,
     FAMILY_ID,
     MISSING_DAYS,
     SERIES_ID,
     Family,
+    FamilySpec,
     build_family,
 )
 from agentic_forecast_review.generator import ActualRow, Snapshot
@@ -43,16 +45,18 @@ def test_committed_case_files_match_a_fresh_build(family: Family) -> None:
     for name, case in expected.items():
         on_disk = (folder / name).read_text(encoding="utf-8")
         assert on_disk == case.model_dump_json(indent=2) + "\n", name
+    families = [build_family(spec) for spec in DEV_FAMILIES]
     for name, entries in (
-        ("manifest.jsonl", family.manifest),
-        ("run_settings.jsonl", family.run_settings),
+        ("manifest.jsonl", [e for f in families for e in f.manifest]),
+        ("run_settings.jsonl", [s for f in families for s in f.run_settings]),
     ):
         lines = "".join(entry.model_dump_json() + "\n" for entry in entries)
         assert (DEV / name).read_text(encoding="utf-8") == lines, name
 
 
 def test_family_is_deterministic(family: Family) -> None:
-    again, other = build_family(), build_family(8)
+    again = build_family()
+    other = build_family(FamilySpec(FAMILY_ID, 8, SERIES_ID))
     assert again.cases == family.cases
     assert not set(other.snapshots) & set(family.snapshots)
 

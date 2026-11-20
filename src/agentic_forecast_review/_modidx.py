@@ -102,6 +102,10 @@ d = {
                 "cases.html#family",
                 "agentic_forecast_review/cases.py",
             ),
+            "agentic_forecast_review.cases.FamilySpec": (
+                "cases.html#familyspec",
+                "agentic_forecast_review/cases.py",
+            ),
             "agentic_forecast_review.cases.build_family": (
                 "cases.html#build_family",
                 "agentic_forecast_review/cases.py",
@@ -122,12 +126,20 @@ d = {
                 "cases.html#growing_noise",
                 "agentic_forecast_review/cases.py",
             ),
+            "agentic_forecast_review.cases.heldout_spec": (
+                "cases.html#heldout_spec",
+                "agentic_forecast_review/cases.py",
+            ),
             "agentic_forecast_review.cases.load_case": (
                 "cases.html#load_case",
                 "agentic_forecast_review/cases.py",
             ),
             "agentic_forecast_review.cases.plant": (
                 "cases.html#plant",
+                "agentic_forecast_review/cases.py",
+            ),
+            "agentic_forecast_review.cases.request_text": (
+                "cases.html#request_text",
                 "agentic_forecast_review/cases.py",
             ),
             "agentic_forecast_review.cases.reschedule": (
@@ -303,6 +315,28 @@ d = {
             "agentic_forecast_review.generator.write_snapshot": (
                 "generator.html#write_snapshot",
                 "agentic_forecast_review/generator.py",
+            ),
+        },
+        "agentic_forecast_review.grading": {
+            "agentic_forecast_review.grading.AutoGrade": (
+                "grading.html#autograde",
+                "agentic_forecast_review/grading.py",
+            ),
+            "agentic_forecast_review.grading.AutoGrade.passed": (
+                "grading.html#autograde.passed",
+                "agentic_forecast_review/grading.py",
+            ),
+            "agentic_forecast_review.grading.auto_grade": (
+                "grading.html#auto_grade",
+                "agentic_forecast_review/grading.py",
+            ),
+            "agentic_forecast_review.grading.packet_text": (
+                "grading.html#packet_text",
+                "agentic_forecast_review/grading.py",
+            ),
+            "agentic_forecast_review.grading.summary": (
+                "grading.html#summary",
+                "agentic_forecast_review/grading.py",
             ),
         },
         "agentic_forecast_review.kill_gate": {

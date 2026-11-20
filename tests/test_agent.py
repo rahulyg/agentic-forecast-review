@@ -83,6 +83,14 @@ def test_clarify_gets_metric_options_and_bad_outcomes_are_refused(
     }
 
 
+def test_finish_refuses_rows_no_tool_returned(family: Family) -> None:
+    run = _run(family)
+    run.request(QUALITY, "check", [])
+    claim = {"label": "FINDING", "text": "days are missing", "rows": ["dq1"]}
+    reply = run.finish("STOP_UNTRUSTWORTHY", [claim], [], [], "stop", ["dq1"])
+    assert not reply["ok"] and "row IDs" in reply["error"] and run.packet is None
+
+
 def test_incomplete_packet_is_valid(family: Family) -> None:
     run = _run(family)
     for _ in range(MAX_TURNS - 1):

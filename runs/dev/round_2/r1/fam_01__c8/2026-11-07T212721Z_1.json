@@ -1,0 +1,49 @@
+{
+ "case_id": "fam_01__c8",
+ "snapshot_id": "snap_554da1510de7",
+ "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+ "temperature": 0.0,
+ "prompt_sha256": "f1795c4a8f46a59767b3ff07c66c33820c59fa7cc433fb3876cf480b10c4a3f4",
+ "started_at": "2026-11-07T21:27:21+00:00",
+ "tokens": {
+  "prompt": 2198,
+  "completion": 624
+ },
+ "error": null,
+ "notes": [],
+ "requests": [],
+ "packet": {
+  "case_id": "fam_01__c8",
+  "runner": "agent",
+  "snapshot_id": "snap_554da1510de7",
+  "terminal_state": "CLARIFY",
+  "claims": [],
+  "clarification": {
+   "missing": [
+    "metric"
+   ],
+   "options": {
+    "metric": [
+     "mae",
+     "signed_bias"
+    ]
+   }
+  },
+  "not_established": [],
+  "trace": [
+   {
+    "turn": 1,
+    "summary": "The request names the series, the review period and the comparison window but does not say whether \"worse\" means MAE or signed bias, and I must not assume a default.",
+    "observation_refs": [],
+    "call": null,
+    "result": null
+   }
+  ],
+  "cost": {
+   "turns": 1,
+   "calls": 0,
+   "usd": 0.000283,
+   "seconds": 3.9
+  }
+ }
+}

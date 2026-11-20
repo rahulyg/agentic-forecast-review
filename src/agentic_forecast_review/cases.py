@@ -2,6 +2,7 @@
 
 # %% auto #0
 __all__ = [
+    "DEV_FAMILIES",
     "FAMILY_ID",
     "SERIES_ID",
     "REVIEW_DAY",
@@ -13,10 +14,10 @@ __all__ = [
     "SWAPPED_MODEL_NOISE",
     "BIAS_FACTOR",
     "WEEKLY_SCHEDULE",
-    "STANDARD_REQUEST",
-    "VAGUE_REQUEST",
-    "CAUSE_REQUEST",
+    "REQUESTS",
     "CASE_SPECS",
+    "FamilySpec",
+    "heldout_spec",
     "growing_noise",
     "drop_actuals",
     "duplicate_actuals",
@@ -24,6 +25,7 @@ __all__ = [
     "scale_forecasts",
     "reschedule",
     "plant",
+    "request_text",
     "CaseSpec",
     "case_id",
     "Family",
@@ -43,7 +45,8 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from agentic_forecast_review.generator import (
-    SEED,
+    CATEGORY_LEVEL,
+    STORES,
     ActualRow,
     ForecastRow,
     Snapshot,
@@ -66,9 +69,32 @@ from agentic_forecast_review.schemas import (
     ToolName,
 )
 
+
 # %% ../../nbs/06b_cases.ipynb #1d2f76894f8b4e08b9e43739ded70c3c
-FAMILY_ID = "fam_01"
-SERIES_ID = "CA_2_FOODS"
+@dataclass(frozen=True)
+class FamilySpec:
+    family_id: str
+    seed: int
+    series_id: str
+    split: Split = Split.DEV
+
+
+DEV_FAMILIES = (
+    FamilySpec("fam_01", 7, "CA_2_FOODS"),
+    FamilySpec("fam_02", 11, "TX_1_HOUSEHOLD"),
+)
+FAMILY_ID = DEV_FAMILIES[0].family_id
+SERIES_ID = DEV_FAMILIES[0].series_id
+
+
+def heldout_spec(family_id: str, seed: int) -> FamilySpec:
+    """A held-out family from its sealed seed; the seed also picks the series."""
+    series = sorted(
+        f"{store}_{category}" for store in STORES for category in CATEGORY_LEVEL
+    )
+    return FamilySpec(family_id, seed, series[seed % len(series)], Split.HELDOUT)
+
+
 REVIEW_DAY = 196
 PERIOD = DayRange(start_day=169, end_day=196)
 WINDOW = DayRange(start_day=141, end_day=168)
@@ -179,13 +205,17 @@ def reschedule(
 
 
 # %% ../../nbs/06b_cases.ipynb #b07242891b994b70a2432b688687456c
-def plant(base: Snapshot, condition: PlantedCondition) -> Snapshot:
-    """The base snapshot with ``condition`` planted (unchanged if it is not in the data)."""
+def plant(
+    base: Snapshot, condition: PlantedCondition, series_id: str = SERIES_ID
+) -> Snapshot:
+    """The base snapshot with ``condition`` planted on ``series_id`` (unchanged if the
+    condition is not in the data)."""
+    category = series_id.rsplit("_", 1)[1]
     match condition:
         case PlantedCondition.MISSING_DATES:
-            return drop_actuals(base, SERIES_ID, MISSING_DAYS)
+            return drop_actuals(base, series_id, MISSING_DAYS)
         case PlantedCondition.DUPLICATE_RECORDS:
-            return duplicate_actuals(base, SERIES_ID, DUPLICATE_DAYS, DOUBLE_LOAD)
+            return duplicate_actuals(base, series_id, DUPLICATE_DAYS, DOUBLE_LOAD)
         case PlantedCondition.VERSION_MISMATCH:
             rng = random.Random(f"{base.seed}/{condition}")
             return swap_model(
@@ -195,23 +225,32 @@ def plant(base: Snapshot, condition: PlantedCondition) -> Snapshot:
             rng = random.Random(f"{base.seed}/{condition}")
             return reschedule(base, (112,), WEEKLY_SCHEDULE, rng, growing_noise)
         case PlantedCondition.BIAS_SHIFT:
-            return scale_forecasts(base, 168, "synthetic_v3", "FOODS", BIAS_FACTOR)
+            return scale_forecasts(base, 168, "synthetic_v3", category, BIAS_FACTOR)
         case _:
             return base
 
 
 # %% ../../nbs/06b_cases.ipynb #0c2483c92bda4924ad7d05274da56b61
-STANDARD_REQUEST = (
-    "CA_2 FOODS forecast error (MAE) looks worse in the review period, days 169-196, "
+_STANDARD = (
+    "{series} forecast error (MAE) looks worse in the review period, days 169-196, "
     "than in the four weeks before, days 141-168. "
     "Does the forecast model need investigating?"
 )
-VAGUE_REQUEST = (
-    "CA_2 FOODS looks worse in the review period, days 169-196, "
-    "than in the four weeks before, days 141-168. "
-    "Does the forecast model need investigating?"
-)
-CAUSE_REQUEST = STANDARD_REQUEST + " Was it caused by a promotion?"
+REQUESTS = {
+    "standard": _STANDARD,
+    "vague": (
+        "{series} looks worse in the review period, days 169-196, "
+        "than in the four weeks before, days 141-168. "
+        "Does the forecast model need investigating?"
+    ),
+    "cause": _STANDARD + " Was it caused by a promotion?",
+}
+
+
+def request_text(kind: str, series_id: str) -> str:
+    """A request about ``series_id``, written as an analyst would (CA_2 FOODS)."""
+    store, category = series_id.rsplit("_", 1)
+    return REQUESTS[kind].format(series=f"{store} {category}")
 
 
 @dataclass(frozen=True)
@@ -219,7 +258,7 @@ class CaseSpec:
     number: int
     planted: PlantedCondition
     expected: TerminalState
-    request_text: str = STANDARD_REQUEST
+    request: str = "standard"
     matched_with: int | None = None
     fail_first_call_to: ToolName | None = None
 
@@ -246,85 +285,88 @@ CASE_SPECS = (
         8,
         PlantedCondition.AMBIGUOUS_REQUEST,
         TerminalState.CLARIFY,
-        request_text=VAGUE_REQUEST,
+        request="vague",
     ),
     CaseSpec(
         9,
         PlantedCondition.UNSUPPORTED_CAUSE,
         TerminalState.ANSWER,
-        request_text=CAUSE_REQUEST,
+        request="cause",
     ),
 )
 
 
-def case_id(number: int) -> str:
-    return f"{FAMILY_ID}__c{number}"
+def case_id(family_id: str, number: int) -> str:
+    return f"{family_id}__c{number}"
 
 
 # %% ../../nbs/06b_cases.ipynb #4f10082aef5e44b6b86c0bf51b426448
 @dataclass(frozen=True)
 class Family:
+    family_id: str
     snapshots: dict[str, Snapshot]
     cases: tuple[Case, ...]
     manifest: tuple[ManifestEntry, ...]
     run_settings: tuple[RunSetting, ...]
 
 
-def build_family(seed: int = SEED) -> Family:
+def build_family(spec: FamilySpec = DEV_FAMILIES[0]) -> Family:
     """Snapshots, cases, manifest and run settings. The same seed gives the same family."""
-    base = generate(seed)
+    base = generate(spec.seed)
     snapshots: dict[str, Snapshot] = {}
     cases: list[Case] = []
     manifest: list[ManifestEntry] = []
     run_settings: list[RunSetting] = []
-    for spec in CASE_SPECS:
-        snapshot = plant(base, spec.planted)
+    for case in CASE_SPECS:
+        snapshot = plant(base, case.planted, spec.series_id)
         snapshots[snapshot.snapshot_id] = snapshot
         metric = (
-            None if spec.planted is PlantedCondition.AMBIGUOUS_REQUEST else Metric.MAE
+            None if case.planted is PlantedCondition.AMBIGUOUS_REQUEST else Metric.MAE
         )
         scope = CanonicalScope(
-            metric=metric, period=PERIOD, window=WINDOW, series=(SERIES_ID,)
+            metric=metric, period=PERIOD, window=WINDOW, series=(spec.series_id,)
         )
         cases.append(
             Case(
-                case_id=case_id(spec.number),
-                family_id=FAMILY_ID,
-                split=Split.DEV,
+                case_id=case_id(spec.family_id, case.number),
+                family_id=spec.family_id,
+                split=spec.split,
                 snapshot_id=snapshot.snapshot_id,
                 review_day=REVIEW_DAY,
-                request_text=spec.request_text,
+                request_text=request_text(case.request, spec.series_id),
                 canonical_scope=scope,
             )
         )
         manifest.append(
             ManifestEntry(
-                case_id=case_id(spec.number),
-                family_id=FAMILY_ID,
-                planted=spec.planted,
-                expected_terminal=spec.expected,
+                case_id=case_id(spec.family_id, case.number),
+                family_id=spec.family_id,
+                planted=case.planted,
+                expected_terminal=case.expected,
                 expected_missing=scope.missing(),
-                matched_case_id=case_id(spec.matched_with)
-                if spec.matched_with
+                matched_case_id=case_id(spec.family_id, case.matched_with)
+                if case.matched_with
                 else None,
             )
         )
-        if spec.fail_first_call_to is not None:
+        if case.fail_first_call_to is not None:
             run_settings.append(
                 RunSetting(
-                    case_id=case_id(spec.number),
-                    fail_first_call_to=spec.fail_first_call_to,
+                    case_id=case_id(spec.family_id, case.number),
+                    fail_first_call_to=case.fail_first_call_to,
                 )
             )
-    return Family(snapshots, tuple(cases), tuple(manifest), tuple(run_settings))
+    return Family(
+        spec.family_id, snapshots, tuple(cases), tuple(manifest), tuple(run_settings)
+    )
 
 
 # %% ../../nbs/06b_cases.ipynb #512cf474a2ab4cf28e70dc040a62656e
 def write_family(family: Family, root: Path) -> None:
     """Write the family's snapshots and case files under ``root``."""
     for snapshot_id, snapshot in family.snapshots.items():
-        write_snapshot(snapshot, root / FAMILY_ID / "snapshots" / snapshot_id)
-    folder = root / FAMILY_ID / "cases"
+        write_snapshot(snapshot, root / family.family_id / "snapshots" / snapshot_id)
+    folder = root / family.family_id / "cases"
     folder.mkdir(parents=True, exist_ok=True)
     for case in family.cases:
         text = case.model_dump_json(indent=2) + "\n"

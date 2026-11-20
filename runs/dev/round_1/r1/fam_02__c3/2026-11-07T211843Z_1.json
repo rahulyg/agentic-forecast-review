@@ -1,0 +1,436 @@
+{
+ "case_id": "fam_02__c3",
+ "snapshot_id": "snap_2d6ecc9ff489",
+ "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+ "temperature": 0.0,
+ "prompt_sha256": "34754b8c64230a9c8b217276bbd17596213e8c970bd379eca37290290f682886",
+ "started_at": "2026-11-07T21:18:43+00:00",
+ "tokens": {
+  "prompt": 36062,
+  "completion": 4040
+ },
+ "error": null,
+ "notes": [
+  "finish refused: 1 validation error for Claim\n  Value error, a FINDING must cite at least one source row [type=value_error, input_value={'label': <ClaimLabel.FIN...ndow}.', 'row_refs': ()}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error",
+  "finish refused: stray digits {'claims[0]': ['171', '178', '185', '171', '29', '58']}",
+  "finish refused: stray digits {'not_established[0]': ['171', '178', '185']}"
+ ],
+ "requests": [
+  {
+   "request": {
+    "tool": "resolve_context"
+   },
+   "reason": "Establish the snapshot context: review day, series, model versions and metrics available.",
+   "based_on": []
+  },
+  {
+   "request": {
+    "tool": "compare_runs",
+    "series": [
+     "TX_1_HOUSEHOLD"
+    ],
+    "metric": "mae",
+    "period": {
+     "start_day": 169,
+     "end_day": 196
+    },
+    "window": {
+     "start_day": 141,
+     "end_day": 168
+    }
+   },
+   "reason": "Compare MAE for TX_1_HOUSEHOLD in review period vs earlier window to see if error worsened.",
+   "based_on": [
+    "ctx1"
+   ]
+  },
+  {
+   "request": {
+    "tool": "check_quality",
+    "series": [
+     "TX_1_HOUSEHOLD"
+    ],
+    "days": {
+     "start_day": 169,
+     "end_day": 196
+    }
+   },
+   "reason": "Check data quality in the review period since actual rows exceed expected days, which may make the comparison unfair.",
+   "based_on": [
+    "cmp2"
+   ]
+  },
+  {
+   "request": {
+    "tool": "evidence_rows",
+    "row_ids": [
+     "act__TX_1_HOUSEHOLD__d0171",
+     "act__TX_1_HOUSEHOLD__d0178",
+     "act__TX_1_HOUSEHOLD__d0185"
+    ]
+   },
+   "reason": "Inspect the duplicate rows in the review period to confirm they inflate the actual count used in the MAE.",
+   "based_on": [
+    "dq3"
+   ]
+  }
+ ],
+ "packet": {
+  "case_id": "fam_02__c3",
+  "runner": "agent",
+  "snapshot_id": "snap_2d6ecc9ff489",
+  "terminal_state": "STOP_UNTRUSTWORTHY",
+  "claims": [
+   {
+    "label": "FINDING",
+    "template": "check_quality reports {ev:dq3.tx_1_household__duplicate_rows} duplicate rows in the review period, each carrying two different actual values for the same target day.",
+    "row_refs": [
+     "act__TX_1_HOUSEHOLD__d0171",
+     "act__TX_1_HOUSEHOLD__d0178",
+     "act__TX_1_HOUSEHOLD__d0185"
+    ]
+   },
+   {
+    "label": "FINDING",
+    "template": "compare_runs for TX_1_HOUSEHOLD reports review-period MAE {ev:cmp2.tx_1_household__mae_period} vs earlier-window MAE {ev:cmp2.tx_1_household__mae_window}, with {ev:cmp2.tx_1_household__n_actual_period} actual rows against {ev:cmp2.tx_1_household__n_expected_period} expected days in the review period, versus {ev:cmp2.tx_1_household__n_actual_window} against {ev:cmp2.tx_1_household__n_expected_window} in the window.",
+    "row_refs": [
+     "act__TX_1_HOUSEHOLD__d0171",
+     "act__TX_1_HOUSEHOLD__d0178",
+     "act__TX_1_HOUSEHOLD__d0185"
+    ]
+   },
+   {
+    "label": "INFERENCE",
+    "template": "The review-period MAE is computed over duplicated actuals, so the review-period error is inflated and the comparison against the earlier window is not valid as computed.",
+    "row_refs": []
+   }
+  ],
+  "clarification": null,
+  "not_established": [
+   "Whether the TX_1_HOUSEHOLD model actually degraded in the review period; the review-period MAE is not trustworthy because of duplicated actuals."
+  ],
+  "trace": [
+   {
+    "turn": 1,
+    "summary": "Establish the snapshot context: review day, series, model versions and metrics available.",
+    "observation_refs": [],
+    "call": {
+     "call_id": "ctx1",
+     "args": {
+      "tool": "resolve_context"
+     }
+    },
+    "result": {
+     "call_id": "ctx1",
+     "ok": true,
+     "fields": {
+      "snapshot_id": "snap_2d6ecc9ff489",
+      "first_day": 1,
+      "last_day": 196,
+      "review_day": 196,
+      "n_series": 30,
+      "model_versions": "seasonal_naive_v1,synthetic_v3",
+      "benchmark_model": "seasonal_naive_v1",
+      "issue_days": "112,140,168",
+      "metrics": "mae,signed_bias"
+     },
+     "row_ids": [],
+     "table": [
+      {
+       "series_id": "CA_1_FOODS"
+      },
+      {
+       "series_id": "CA_1_HOBBIES"
+      },
+      {
+       "series_id": "CA_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_2_FOODS"
+      },
+      {
+       "series_id": "CA_2_HOBBIES"
+      },
+      {
+       "series_id": "CA_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_3_FOODS"
+      },
+      {
+       "series_id": "CA_3_HOBBIES"
+      },
+      {
+       "series_id": "CA_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "CA_4_FOODS"
+      },
+      {
+       "series_id": "CA_4_HOBBIES"
+      },
+      {
+       "series_id": "CA_4_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_1_FOODS"
+      },
+      {
+       "series_id": "TX_1_HOBBIES"
+      },
+      {
+       "series_id": "TX_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_2_FOODS"
+      },
+      {
+       "series_id": "TX_2_HOBBIES"
+      },
+      {
+       "series_id": "TX_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "TX_3_FOODS"
+      },
+      {
+       "series_id": "TX_3_HOBBIES"
+      },
+      {
+       "series_id": "TX_3_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_1_FOODS"
+      },
+      {
+       "series_id": "WI_1_HOBBIES"
+      },
+      {
+       "series_id": "WI_1_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_2_FOODS"
+      },
+      {
+       "series_id": "WI_2_HOBBIES"
+      },
+      {
+       "series_id": "WI_2_HOUSEHOLD"
+      },
+      {
+       "series_id": "WI_3_FOODS"
+      },
+      {
+       "series_id": "WI_3_HOBBIES"
+      },
+      {
+       "series_id": "WI_3_HOUSEHOLD"
+      }
+     ],
+     "error": null,
+     "result_hash": "a517d0aaeb82e93176dac7e9f478fd08b91d3de26c62a08395ef7a62d41341c2"
+    }
+   },
+   {
+    "turn": 2,
+    "summary": "Compare MAE for TX_1_HOUSEHOLD in review period vs earlier window to see if error worsened.",
+    "observation_refs": [
+     "ctx1"
+    ],
+    "call": {
+     "call_id": "cmp2",
+     "args": {
+      "tool": "compare_runs",
+      "series": [
+       "TX_1_HOUSEHOLD"
+      ],
+      "metric": "mae",
+      "period": {
+       "start_day": 169,
+       "end_day": 196
+      },
+      "window": {
+       "start_day": 141,
+       "end_day": 168
+      },
+      "model_version": null
+     }
+    },
+    "result": {
+     "call_id": "cmp2",
+     "ok": true,
+     "fields": {
+      "tx_1_household__mae_period": 5.677,
+      "tx_1_household__bias_period": -2.194,
+      "tx_1_household__n_actual_period": 31,
+      "tx_1_household__n_expected_period": 28,
+      "tx_1_household__model_period": "synthetic_v3",
+      "tx_1_household__horizons_period": "1-28",
+      "tx_1_household__mae_window": 2.643,
+      "tx_1_household__bias_window": 1.357,
+      "tx_1_household__n_actual_window": 28,
+      "tx_1_household__n_expected_window": 28,
+      "tx_1_household__model_window": "synthetic_v3",
+      "tx_1_household__horizons_window": "1-28",
+      "tx_1_household__mae_delta": 3.035,
+      "tx_1_household__bias_delta": -3.551
+     },
+     "row_ids": [],
+     "table": [],
+     "error": null,
+     "result_hash": "5919d16ec3f2a0e4310192feee3ccaabbc741f51343ade867d3dbe100fe0026b"
+    }
+   },
+   {
+    "turn": 3,
+    "summary": "Check data quality in the review period since actual rows exceed expected days, which may make the comparison unfair.",
+    "observation_refs": [
+     "cmp2"
+    ],
+    "call": {
+     "call_id": "dq3",
+     "args": {
+      "tool": "check_quality",
+      "series": [
+       "TX_1_HOUSEHOLD"
+      ],
+      "days": {
+       "start_day": 169,
+       "end_day": 196
+      }
+     }
+    },
+    "result": {
+     "call_id": "dq3",
+     "ok": true,
+     "fields": {
+      "tx_1_household__missing_days": 0,
+      "tx_1_household__duplicate_rows": 3,
+      "tx_1_household__coverage": 1.0,
+      "tx_1_household__version_count": 1,
+      "tx_1_household__horizon_range": "1-28"
+     },
+     "row_ids": [
+      "act__TX_1_HOUSEHOLD__d0171",
+      "act__TX_1_HOUSEHOLD__d0178",
+      "act__TX_1_HOUSEHOLD__d0185"
+     ],
+     "table": [],
+     "error": null,
+     "result_hash": "7b23c50dc652569a3bec18303cc6d54414538e88440e4e6dcd933b0af2c7546b"
+    }
+   },
+   {
+    "turn": 4,
+    "summary": "Inspect the duplicate rows in the review period to confirm they inflate the actual count used in the MAE.",
+    "observation_refs": [
+     "dq3"
+    ],
+    "call": {
+     "call_id": "rows4",
+     "args": {
+      "tool": "evidence_rows",
+      "row_ids": [
+       "act__TX_1_HOUSEHOLD__d0171",
+       "act__TX_1_HOUSEHOLD__d0178",
+       "act__TX_1_HOUSEHOLD__d0185"
+      ]
+     }
+    },
+    "result": {
+     "call_id": "rows4",
+     "ok": true,
+     "fields": {
+      "n_rows": 3,
+      "n_found": 3
+     },
+     "row_ids": [
+      "act__TX_1_HOUSEHOLD__d0171",
+      "act__TX_1_HOUSEHOLD__d0178",
+      "act__TX_1_HOUSEHOLD__d0185"
+     ],
+     "table": [
+      {
+       "row_id": "act__TX_1_HOUSEHOLD__d0171",
+       "kind": "actual",
+       "series_id": "TX_1_HOUSEHOLD",
+       "model": "",
+       "issue_day": 0,
+       "target_day": 171,
+       "horizon": 0,
+       "value": 29
+      },
+      {
+       "row_id": "act__TX_1_HOUSEHOLD__d0171",
+       "kind": "actual",
+       "series_id": "TX_1_HOUSEHOLD",
+       "model": "",
+       "issue_day": 0,
+       "target_day": 171,
+       "horizon": 0,
+       "value": 58
+      },
+      {
+       "row_id": "act__TX_1_HOUSEHOLD__d0178",
+       "kind": "actual",
+       "series_id": "TX_1_HOUSEHOLD",
+       "model": "",
+       "issue_day": 0,
+       "target_day": 178,
+       "horizon": 0,
+       "value": 31
+      },
+      {
+       "row_id": "act__TX_1_HOUSEHOLD__d0178",
+       "kind": "actual",
+       "series_id": "TX_1_HOUSEHOLD",
+       "model": "",
+       "issue_day": 0,
+       "target_day": 178,
+       "horizon": 0,
+       "value": 62
+      },
+      {
+       "row_id": "act__TX_1_HOUSEHOLD__d0185",
+       "kind": "actual",
+       "series_id": "TX_1_HOUSEHOLD",
+       "model": "",
+       "issue_day": 0,
+       "target_day": 185,
+       "horizon": 0,
+       "value": 34
+      },
+      {
+       "row_id": "act__TX_1_HOUSEHOLD__d0185",
+       "kind": "actual",
+       "series_id": "TX_1_HOUSEHOLD",
+       "model": "",
+       "issue_day": 0,
+       "target_day": 185,
+       "horizon": 0,
+       "value": 68
+      }
+     ],
+     "error": null,
+     "result_hash": "a5ef4a55167a04aa1e820eb8e435ec454d554d41ef5c39d7a139bc94780f49d1"
+    }
+   },
+   {
+    "turn": 5,
+    "summary": "The review-period actuals contain duplicate rows, so the MAE comparison is not fair and the model cannot be judged.",
+    "observation_refs": [
+     "cmp2",
+     "dq3"
+    ],
+    "call": null,
+    "result": null
+   }
+  ],
+  "cost": {
+   "turns": 5,
+   "calls": 4,
+   "usd": 0.002777,
+   "seconds": 28.5
+  }
+ }
+}
